@@ -1,0 +1,109 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+        <!-- Content Wrapper -->
+        <div id="content-wrapper" class="d-flex flex-column">
+
+          <!-- Main Content -->
+          <div id="content">
+
+            <!-- Begin Page Content -->
+            <div class="container-fluid">
+
+              <!-- Page Heading -->
+              <h1 class="h3 mb-2 text-gray-800">Video Administrator Dashboard</h1>
+              <p class="mb-4">
+                <ul>
+                    <li><a href="video/video_list">View Videos</a></li>
+                    <li>Schedule Video for a Channel</a>
+                    <li>View Live Stream</li>
+                </ul>
+              </p>
+
+              <!-- Content Row -->
+              <div class="row">
+
+                <div class="col-xl-8 col-lg-7">
+
+                  <!-- Area Chart -->
+                  <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                      <h6 class="m-0 font-weight-bold text-primary">Total Advertisement Revenue</h6>
+                    </div>
+                    <div class="card-body">
+                      <div class="chart-area">
+                        <canvas id="myAreaChart"></canvas>
+                      </div>
+                      <hr>
+                      Totals Across all Videos
+                    </div>
+                  </div>
+
+                  <!-- Bar Chart -->
+                  <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                      <h6 class="m-0 font-weight-bold text-primary">Top Viewed Videos</h6>
+                    </div>
+                    <div class="card-body">
+                      <div class="chart-bar">
+                        <canvas id="myBarChart"></canvas>
+                      </div>
+                      <hr>
+                      Top 10 Across all Channels
+                    </div>
+                  </div>
+
+                </div>
+                <!-- end column -->
+
+                <!-- Donut Chart -->
+                <div class="col-xl-4 col-lg-5">
+
+                  <div class="card shadow mb-4">
+                    <!-- Card Header - Dropdown -->
+                    <div class="card-header py-3">
+                      <h6 class="m-0 font-weight-bold text-primary">Channel Demographics</h6>
+                    </div>
+                    <!-- Card Body -->
+                    <div class="card-body">
+                      <div class="chart-pie pt-4">
+                        <canvas id="myPieChart"></canvas>
+                      </div>
+                      <hr>
+                      Channels by Percent Viewership
+                    </div>
+                  </div>
+
+                  <!-- Donut Chart -->
+                  <div class="card shadow mb-4">
+                    <!-- Card Header - Dropdown -->
+                    <div class="card-header py-3">
+                      <h6 class="m-0 font-weight-bold text-primary">Channel Revenue</h6>
+                    </div>
+                    <!-- Card Body -->
+                    <div class="card-body">
+                      <div class="chart-pie pt-4">
+                        <canvas id="myPieChart"></canvas>
+                      </div>
+                      <hr>
+                      Channels by Percent Viewership
+                    </div>
+                  </div>
+                </div>
+                <!-- /end column -->
+              </div>
+              <!-- /end ROW -->
+            </div>
+            <!-- /.container-fluid -->
+          </div>
+          <!-- End of Main Content -->
+
+          <!-- Page level custom scripts -->
+          <!-- Page level plugins -->
+          <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.bundle.min.js" integrity="sha512-vBmx0N/uQOXznm/Nbkp7h0P1RfLSj0HQrFSzV8m7rOGyj30fYAOKHYvCNez+yM8IrfnW0TCodDEjRqf6fodf/Q==" crossorigin="anonymous"></script>
+          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.css" integrity="sha512-/zs32ZEJh+/EO2N1b0PEdoA10JkdC3zJ8L5FTiQu82LR9S/rOQNfQN7U59U9BC12swNeRAz3HSzIL2vpp4fv3w==" crossorigin="anonymous" />
+          <script src="/static/assets/src/js/demo/chart-area-demo.js"></script>
+          <script src="/static/assets/src/js/demo/chart-pie-demo.js"></script>
+          <script src="/static/assets/src/js/demo/chart-bar-demo.js"></script>
+{% endblock content %}

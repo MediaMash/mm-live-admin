@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block title %}Addtional Permissions Required{% endblock %}
+
+{% block page_title %}You don't appear to have the proper permissions to access this page.{% endblock page_title %}
+
+{% block content %}
+<p>
+    Please check with your Administrator if you think you should have access to this section.
+    <br/>
+</p>
+<img src="{{ STATIC_URL }}img/denied.jpg" border="1">
+{% endblock content %}

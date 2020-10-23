@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+        <div class="main__panel__top">
+            <a href="/login/logout" class="text--red">Log Out</a>
+        </div>
+        <div class="app-page">
+            <img src="{{ STATIC_URL }}assets/src/img/logo.png" alt="" class="mx-auto login__logo">
+
+            <h3 class="text-center">Administrator</h3>
+            <p class="mb-4">
+                Welcome: <span class="font-weight-bold">{{ request.user}}!</span><br />
+                <span class="text--small">You have successfuly logged in.</span>
+            </p>
+ß
+            <div class="message mt-5">
+                 {% if "demo" in request.build_absolute_uri %}
+                    <h4 class="text-center">This is a Demonstration server and account.</h4>
+                    <p class="text-center">All data will be deleted from the server every 7 days.</p>
+                 {% endif %}
+            </div>
+        </div>
+
+{% endblock content %}

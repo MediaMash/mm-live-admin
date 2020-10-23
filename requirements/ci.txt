@@ -1,0 +1,5 @@
+-r base.txt
+
+bandit==1.5.1
+coverage==4.5.2
+flake8==3.6.0

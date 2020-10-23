@@ -1,0 +1,79 @@
+version: "3.2"
+
+services:
+
+  postgres_video_service:
+    container_name: postgres_video_service
+    healthcheck:
+      test: "pg_isready -h localhost -p 5432 -q -U postgres"
+      interval: 3s
+      timeout: 5s
+      retries: 5
+    image: postgres:10.4-alpine
+    environment:
+      POSTGRES_DB: video_service
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: root
+    volumes:
+      - /var/lib/postgresql/data/
+    restart: always
+    networks:
+      - djangonetwork
+
+  nginx:
+    restart: always
+    image: "nginx"
+    ports:
+      - "8080:8080"
+    volumes:
+      - .:/code
+      - ./nginx/conf.d:/etc/nginx/conf.d
+      - ./static:/static
+      - ./media:/static/media
+    depends_on:
+      - video_service
+    networks:
+      - djangonetwork
+  video_service:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    entrypoint: bash /code/docker-entrypoint-dev.sh
+    container_name: video_service
+    image: video_service
+    volumes:
+      - .:/code
+    ports:
+      - "8085:8085"
+    depends_on:
+      - postgres_video_service
+    environment:
+      ALLOWED_HOSTS: localhost,127.0.0.1,0.0.0.0
+      CORS_ORIGIN_WHITELIST: localhost,127.0.0.1,0.0.0.0
+      DATABASE_ENGINE: "postgresql"
+      DATABASE_NAME: "video_service"
+      DATABASE_USER: "root"
+      DATABASE_PASSWORD: "root"
+      DATABASE_HOST: "postgres_video_service"
+      DATABASE_PORT: "5432"
+      DEBUG: "True"
+      SECRET_KEY: "nothing"
+      JWT_PUBLIC_KEY_RSA_BIFROST: |-
+        -----BEGIN PUBLIC KEY-----
+        MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBALFc9NFZaOaSwUMPNektbtJqEjYZ6IRB
+        qhqvJu1hKPYn9HYd75c0gIDYHJ9lb7QwQvg44aO27104rDK0xSstzL0CAwEAAQ==
+        -----END PUBLIC KEY-----
+      STATIC_ROOT: /static/
+      MEDIA_ROOT: /media/
+      VOD_ENDPOINT: "https://vmvpjxv31d.execute-api.us-east-1.amazonaws.com/dev/videos"
+      CLOUDFLARE_API_URL: "https://api.cloudflare.com/client/v4/accounts/cec79967f06ab99382df3b880c077c4f/"
+      CLOUDFLARE_ACCOUNT: "cec79967f06ab99382df3b880c077c4f"
+      CLOUDFLARE_TOKEN: "e3eed904f06b9ec4dfab36b8ea4fca33d184e"
+      CLOUDFLARE_AUTH_EMAIL: "greg@mediamash.tech"
+      YOUTUBE_API_URL: "https://www.googleapis.com/youtube/v3/videos?key="
+      YOUTUBE_API_KEY: "AIzaSyBe5izcyAZ754TYioOMR_fiy5Tg4tchGlc"
+    networks:
+      - djangonetwork
+networks:
+  djangonetwork:
+    driver: bridge

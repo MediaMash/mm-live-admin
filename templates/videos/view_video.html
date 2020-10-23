@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% block bread_crumb %}
+<!-- breadcrumb -->
+<ul class="navbar-nav ml-auto">
+  <li class="nav-item"><a class="nav-link" href="/video/video_add/">Create a Video</a></li>
+  <li class="nav-item active"><a class="nav-link" href="#">View Video</a></li>
+</ul>
+
+{% endblock %}
+
+
+{% block content %}
+<div>
+<br/>
+</div>
+
+<!-- DataTable -->
+<div class="card shadow mb-4">
+  <div class="card-header py-3">
+    <h6 class="m-0 font-weight-bold text-primary">{% block page_title %}Your Video{% endblock %}</h6>
+  </div>
+  <div class="card-body">
+    <h4>{{ getVideo.name }}</h4>
+    <p>
+      ID: {{ getVideo.id }}<br/>
+      Description: {{getVideo.description}}<br/>
+      Owner: {{getVideo.owner}}<br/>
+      File: {{getVideo.video_file}}<br/>
+      Created: {{ getVideo.created }} Last Update:{{ getVideo.updated }}<br/>
+      HLS: {{ getVideo.playback_hls }}
+    </p>
+
+    <link href="//vjs.zencdn.net/7.8.2/video-js.min.css" rel="stylesheet">
+    <script src="//vjs.zencdn.net/7.8.2/video.min.js"></script>
+    <video
+    id="my-player"
+    class="video-js"
+    controls
+    preload="auto"
+    poster="//vjs.zencdn.net/v/oceans.png"
+    data-setup='{}'>
+    <source src="{{ getVideo.playback_hls }}" type="application/x-mpegURL"></source>
+
+      <p class="vjs-no-js">
+        To view this video please enable JavaScript, and consider upgrading to a
+        web browser that
+        <a href="https://videojs.com/html5-video-support/" target="_blank">
+          supports HTML5 video
+        </a>
+      </p>
+    </video>
+  </div><!-- close card body -->
+</div><!-- close card shadom
+
+
+
+{% endblock content %}

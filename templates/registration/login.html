@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block title %}Login{% endblock %}
+
+{% block content %}
+    <div class="login-page">
+        <img src="{{ STATIC_URL }}assets/src/img/logo.png" alt="" class="mx-auto login__logo">
+        <h3 class="text-center">Login</h3>
+        <p class="text-center text--gray text--light">Enter your details below.</p>
+        <form action="" method="post">
+          {% csrf_token %}
+          <div class="tola-form">
+            {{ form.as_p }}
+              <div class="text-center">
+                  <input type="submit" value="Login"class="btn btn-primary">
+              </div>
+          </div>
+        </form>
+
+        </div>
+    </div>
+{% endblock %}
