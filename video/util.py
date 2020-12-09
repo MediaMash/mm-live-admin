@@ -2,21 +2,21 @@ import requests
 import json
 from tusclient import client
 from django.conf import settings
-
+from .models import Provider
 # Get an instance of a logger
 import logging
 logger = logging.getLogger(__name__)
 
-cloudlfare = None
-# cloudlfare = Provider.objects.all().filter(name="CloudFlare")
 """
 Set account variables for cloudflare api access
 """
-if cloudlfare:
-    api_url = cloudlfare.api
-    account = cloudlfare.account
-    token = cloudlfare.token
-    auth_email = cloudlfare.auth_email
+cloudflare = Provider.objects.all().filter(name="Internal").first()
+if cloudflare:
+    api_url = cloudflare.api_url
+    account = cloudflare.account_key
+    token = cloudflare.token
+    auth_email = cloudflare.auth_email
+    pass
 else:
     api_url = settings.CLOUDFLARE_API_URL
     account = settings.CLOUDFLARE_ACCOUNT

@@ -3,7 +3,6 @@ from django.contrib import admin
 from django.contrib.auth.models import User
 from django.utils import timezone
 import logging
-from video.util import upload_video, verify_token, get_details, delete_video
 from django.conf import settings
 from django.contrib import messages
 import json
@@ -109,6 +108,7 @@ class Video(models.Model):
         verbose_name_plural = "Videos"
 
     def save(self, *args, **kwargs):
+        from video.util import upload_video, get_details
         if self.created == None:
             self.created = timezone.now()
         self.updated = timezone.now()
@@ -135,6 +135,7 @@ class Video(models.Model):
         super(Video, self).save()
 
     def delete(self, *args, **kwargs):
+        from video.util import delete_video
         if self.video_file is not None and self.is_live is True:
             remove_stream = delete_video(video_id=str(self.stream_id))
         super(Video, self).delete()
