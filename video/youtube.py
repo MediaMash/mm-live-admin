@@ -2,24 +2,22 @@ import requests
 import json
 from tusclient import client
 from django.conf import settings
-from .models import Provider
+from video.models import Provider 
 
 # Get an instance of a logger
 import logging
 logger = logging.getLogger(__name__)
-youtube = None
-# youtube = Provider.objects.all().filter(name="YouTube")
 
 """
 Set account variables for youtube api access
 """
+youtube = Provider.objects.filter(name="YouTube").first()
 if youtube:
-    api_url = youtube.api
-    account_key = youtube.account
+    api_url = youtube.api_url
+    account_key = youtube.account_key
 else:
     api_url = settings.YOUTUBE_API_URL
     account_key = settings.YOUTUBE_API_KEY
-
 def upload_video(file, path):
     # Set Authorization headers if it is required
     # by the tus server.

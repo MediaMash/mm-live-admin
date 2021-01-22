@@ -3,7 +3,6 @@ from django.contrib import admin
 from django.contrib.auth.models import User
 from django.utils import timezone
 import logging
-from video.util import upload_video, verify_token, get_details, delete_video
 from django.conf import settings
 from django.contrib import messages
 import json
@@ -109,12 +108,12 @@ class Video(models.Model):
         verbose_name_plural = "Videos"
 
     def save(self, *args, **kwargs):
+        from video.util import upload_video, get_details
         if self.created == None:
             self.created = timezone.now()
         self.updated = timezone.now()
         super(Video, self).save()
         if self.video_file is not None and self.is_live is False:
-            print(self.video_file.name)
             logger.warning("Upload: " + self.video_file.name)
             logger.warning("Upload Path: " + self.video_file.path)
             stream = upload_video(file=str(self.video_file.name), path=str(self.video_file.path))
@@ -127,7 +126,6 @@ class Video(models.Model):
                 self.stream_url = str(stream)
                 self.stream_id = stream.rsplit('/',1)[1]
                 details = get_details(video_id=str(self.stream_id))
-                print(details['result'])
                 video_details=details['result']
                 self.playback_hls = video_details['playback']['hls']
                 self.playback_dash = video_details['playback']['dash']
@@ -135,6 +133,7 @@ class Video(models.Model):
         super(Video, self).save()
 
     def delete(self, *args, **kwargs):
+        from video.util import delete_video
         if self.video_file is not None and self.is_live is True:
             remove_stream = delete_video(video_id=str(self.stream_id))
         super(Video, self).delete()

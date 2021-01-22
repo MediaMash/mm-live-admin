@@ -2,28 +2,30 @@ import requests
 import json
 from tusclient import client
 from django.conf import settings
-
+from .models import Provider
 # Get an instance of a logger
 import logging
 logger = logging.getLogger(__name__)
 
-cloudlfare = None
-# cloudlfare = Provider.objects.all().filter(name="CloudFlare")
 """
 Set account variables for cloudflare api access
 """
-if cloudlfare:
-    api_url = cloudlfare.api
-    account = cloudlfare.account
-    token = cloudlfare.token
-    auth_email = cloudlfare.auth_email
-else:
-    api_url = settings.CLOUDFLARE_API_URL
-    account = settings.CLOUDFLARE_ACCOUNT
-    token = settings.CLOUDFLARE_TOKEN
-    auth_email = settings.CLOUDFLARE_AUTH_EMAIL
+def setup():
+    cloudflare = Provider.objects.all().filter(name="Internal").first()
+    if cloudflare:
+        api_url = cloudflare.api_url
+        account = cloudflare.account_key
+        token = cloudflare.token
+        auth_email = cloudflare.auth_email
+    else:
+        api_url = settings.CLOUDFLARE_API_URL
+        account = settings.CLOUDFLARE_ACCOUNT
+        token = settings.CLOUDFLARE_TOKEN
+        auth_email = settings.CLOUDFLARE_AUTH_EMAIL
+    return api_url,account,token,auth_email
 
 def verify_token():
+    api_url,account,token,auth_email=setup()
     resp = requests.get(api_url + 'user/tokens/verify',
                     headers = {'Authorization': token, 'X-Auth-Email': auth_email})
     if resp.status_code != 200:
@@ -43,7 +45,7 @@ def upload_video(file, path):
     Formats:
     MP4, MKV, MOV, AVI, FLV, MPEG-2 TS, MPEG-2 PS, MXF, LXF, GXF, 3GP, WebM, MPG, QuickTime
     """
-
+    api_url,account,token,auth_email=setup()
     my_client = client.TusClient(url=api_url  + 'stream',
                                   headers={'X-Auth-Key': token, 'X-Auth-Email': auth_email})
     logger.warning("URL:" + str(my_client.url))
@@ -72,6 +74,7 @@ def check_encoding(video_id):
         -H 'X-Auth-Key: {api-key}' \
         -H 'Content-Type: application/json'
     """
+    api_url,account,token,auth_email=setup()
     resp = requests.get(api_url + 'stream/' + video_id ,
                     headers = {'X-Auth-Key': token, 'X-Auth-Email': auth_email})
     if resp.status_code != 200:
@@ -87,6 +90,7 @@ def get_embed_code(video_id):
         -H 'X-Auth-Key: {api-key}' \
         -H 'Content-Type: application/json'
     """
+    api_url,account,token,auth_email=setup()
     resp = requests.get(api_url + 'stream/' + video_id + '/embed',
                     headers = {'X-Auth-Key': token, 'X-Auth-Email': auth_email})
     if resp.status_code != 200:
@@ -103,6 +107,7 @@ def get_details(video_id):
      -H "X-Auth-Key: c2547eb745079dac9320b638f5e225cf483cc5cfdda41" \
      -H "Content-Type: application/json"
     """
+    api_url,account,token,auth_email=setup()
     resp = requests.get(api_url + 'stream/' + video_id,
                     headers = {'X-Auth-Key': token, 'X-Auth-Email': auth_email})
     if resp.status_code != 200:
@@ -112,6 +117,7 @@ def get_details(video_id):
         return json.loads(resp.content)
 
 def search_video(name):
+    api_url,account,token,auth_email=setup()
     resp = requests.get('api_url' + 'accounts/' + account_id + '/media?search=' + name,
                         data = json.dumps(data),
                         headers = {'X-Auth-Key': token, 'X-Auth-Email': auth_email})
@@ -122,6 +128,7 @@ def search_video(name):
         return json.loads(resp.content)
 
 def delete_video(video_id):
+    api_url,account,token,auth_email=setup()
     resp = requests.delete(api_url + 'stream/' + video_id,
                     headers = {'X-Auth-Key': token, 'X-Auth-Email': auth_email})
     if resp.status_code != 200:
