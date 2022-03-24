@@ -1,4 +1,4 @@
-# video_service
+# Video Library and Livestream Administrator
 
 ## Development
 
