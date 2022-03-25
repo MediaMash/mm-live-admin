@@ -36,3 +36,9 @@ To run bash:
 ```bash
 docker-compose run --rm --entrypoint 'bash' video_service
 ```
+
+### Material Forms
+http://docs.viewflow.io/material_forms.html
+
+### Django Sage Streaming
+https://django-sage-streaming.readthedocs.io/en/latest/quick_start.html

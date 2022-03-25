@@ -1,4 +1,5 @@
 {% load staticfiles %}
+{% load material_form %}
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -20,6 +21,9 @@
 
         <!-- Custom styles for this template-->
         <link href="/static/assets/src/css/sb-admin-2.css" rel="stylesheet">
+        <!-- Compiled and minified CSS -->
+        {% include 'material/includes/material_css.html' %}
+        {% include 'material/includes/material_js.html' %}
 
         {% block extra_js_in_header %}
 

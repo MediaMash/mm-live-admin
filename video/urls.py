@@ -4,6 +4,7 @@ from .views import VideoList, VideoUpdate, VideoCreate, VideoDelete, VideoView, 
 from .stream_views import LiveStreamList, LiveStreamUpdate, LiveStreamCreate, LiveStreamDelete, LiveStreamView, LiveStreamPlayer
 
 urlpatterns = [
+
     # Video
     url(r'^$', VideoList.as_view(), name='video_list'),
     url(r'^video_list/$', VideoList.as_view(), name='video_list'),
@@ -13,6 +14,7 @@ urlpatterns = [
     url(r'^video_player/$', VideoPlayer.as_view(), name='player_view'),
     url(r'^video_delete/(?P<pk>\w+)/$', VideoDelete.as_view(), name='video_delete'),
     # LiveStream
+    path('video_stream', views.video_stream, name='video_stream'),
     url(r'^$', LiveStreamList.as_view(), name='livestream_list'),
     url(r'^livestream_list/$', LiveStreamList.as_view(), name='livestream_list'),
     url(r'^livestream_add/$', LiveStreamCreate.as_view(), name='livestream_add'),

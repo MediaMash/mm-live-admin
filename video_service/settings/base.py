@@ -43,6 +43,8 @@ INSTALLED_APPS_THIRD_PARTIES = [
     'rest_framework.authtoken',
     'django_filters',
     'crispy_forms',
+    'sage_stream',
+    'material',
 
     # Health check
     'health_check',
