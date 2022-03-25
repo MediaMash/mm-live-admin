@@ -18,5 +18,5 @@ RUN ./scripts/run-collectstatic.sh
 
 RUN apk del .build-deps
 
-EXPOSE 8085
+EXPOSE 8080
 ENTRYPOINT ["bash", "/code/docker-entrypoint.sh"]
