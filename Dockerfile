@@ -7,6 +7,7 @@ WORKDIR /code
 RUN apk add --no-cache postgresql-libs bash
 RUN apk add --no-cache --virtual .build-deps git python-dev gcc musl-dev postgresql-dev libffi-dev libressl-dev
 
+RUN pip install --upgrade pip
 COPY ./requirements/base.txt requirements/base.txt
 COPY ./requirements/production.txt requirements/production.txt
 RUN pip install -r requirements/production.txt --no-cache-dir
