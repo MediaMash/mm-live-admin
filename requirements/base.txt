@@ -8,5 +8,5 @@ drf-yasg==1.10.2
 django-crispy-forms
 tuspy
 django-parcel-ssr
-django-sage-streaming
+PyLivestream
 django-material
