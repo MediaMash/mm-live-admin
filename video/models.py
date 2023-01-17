@@ -123,12 +123,12 @@ class Video(models.Model):
             else:
                 logger.warning("Upload SUCCESS!!: " + stream)
                 self.is_live = True
-                self.stream_url = str(stream)
                 self.stream_id = stream.rsplit('/',1)[1]
                 details = get_details(video_id=str(self.stream_id))
                 video_details=details['result']
                 self.playback_hls = video_details['playback']['hls']
                 self.playback_dash = video_details['playback']['dash']
+                self.stream_url = video_details['playback']['preview']
                 self.status = video_details['status']
         super(Video, self).save()
 

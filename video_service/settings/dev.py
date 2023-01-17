@@ -18,10 +18,6 @@ ALLOWED_HOSTS = ['*']
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
-MIDDLEWARE = MIDDLEWARE + ['debug_toolbar.middleware.DebugToolbarMiddleware']
-
-INSTALLED_APPS = INSTALLED_APPS + ["debug_toolbar",]
-
 INTERNAL_IPS = [
     "localhost",
     "127.0.0.1",

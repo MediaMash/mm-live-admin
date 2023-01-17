@@ -1,6 +1,7 @@
 import requests
 import json
 from tusclient import client
+import tus
 from django.conf import settings
 from .models import Provider
 # Get an instance of a logger
@@ -45,28 +46,31 @@ def upload_video(file, path):
     Formats:
     MP4, MKV, MOV, AVI, FLV, MPEG-2 TS, MPEG-2 PS, MXF, LXF, GXF, 3GP, WebM, MPG, QuickTime
     """
+
     api_url,account,token,auth_email=setup()
-    my_client = client.TusClient(url=api_url  + 'stream',
-                                  headers={'X-Auth-Key': token, 'X-Auth-Email': auth_email})
-    logger.warning("URL:" + str(my_client.url))
-    uploader = my_client.uploader(file_path=path, chunk_size=5 * 1024 * 1024, metadata={'name': file,})
-    uploader.upload()
-    logger.warning("STATUS:" + str(uploader) + "-" + str(uploader.url))
-    if uploader.url:
-        return str(uploader.url)
-    else:
-        return "ERROR"
 
-    """
-    files = {'upload_file': open(path,'rb')}
-    resp = requests.post(api_url + 'stream',
-                    headers = {'Authorization': token, 'X-Auth-Email': auth_email},
-                    files=files)
+    print("url: " + api_url + account + '/stream')
+    
+    # Create a new tus client
+    my_client = client.TusClient(url=api_url + account + '/stream?direct_user=true',
+                              headers={'Authorization': 'Bearer ' + token })
 
-    logger.warning("ERROR:" + str(resp.status_code) + "-" + str(resp.content))
-    return resp.content
-    """
+    # Open the video file
+    with open(path, 'rb') as file:
+        # Start the upload
+        uploader = my_client.uploader(path, chunk_size=52428800, retries=5)
 
+        # Start the upload
+        uploader.upload()
+
+        response = uploader.url
+
+        video_url = response[:response.find('?', 0)]
+        
+    
+    return video_url
+   
+    
 def check_encoding(video_id):
     """
     curl 'https://api.cloudflare.com/client/v4/accounts/{account_id}/stream/{video-id}' \
@@ -75,8 +79,8 @@ def check_encoding(video_id):
         -H 'Content-Type: application/json'
     """
     api_url,account,token,auth_email=setup()
-    resp = requests.get(api_url + 'stream/' + video_id ,
-                    headers = {'X-Auth-Key': token, 'X-Auth-Email': auth_email})
+    resp = requests.get(api_url + account + '/stream/' + video_id ,
+                    headers={'Authorization': 'Bearer ' + token })
     if resp.status_code != 200:
         logger.warning("ERROR:" + str(resp.status_code) + "-" + str(resp.content))
         return str(resp.status_code)
@@ -91,8 +95,8 @@ def get_embed_code(video_id):
         -H 'Content-Type: application/json'
     """
     api_url,account,token,auth_email=setup()
-    resp = requests.get(api_url + 'stream/' + video_id + '/embed',
-                    headers = {'X-Auth-Key': token, 'X-Auth-Email': auth_email})
+    resp = requests.get(api_url + account + '/stream/' + video_id + '/embed',
+                    headers={'Authorization': 'Bearer ' + token })
     if resp.status_code != 200:
         logger.warning("ERROR:" + str(resp.status_code) + "-" + str(resp.content))
         return str(resp.status_code)
@@ -108,8 +112,9 @@ def get_details(video_id):
      -H "Content-Type: application/json"
     """
     api_url,account,token,auth_email=setup()
-    resp = requests.get(api_url + 'stream/' + video_id,
-                    headers = {'X-Auth-Key': token, 'X-Auth-Email': auth_email})
+    print(api_url + account + '/stream/' + video_id)
+    resp = requests.get(api_url + account + '/stream/' + video_id,
+                    headers={'Authorization': 'Bearer ' + token })
     if resp.status_code != 200:
         logger.warning("ERROR:" + str(resp.status_code) + "-" + str(resp.content))
         return resp.status_code
@@ -118,9 +123,9 @@ def get_details(video_id):
 
 def search_video(name):
     api_url,account,token,auth_email=setup()
-    resp = requests.get('api_url' + 'accounts/' + account_id + '/media?search=' + name,
+    resp = requests.get(api_url + account  + '/media?search=' + name,
                         data = json.dumps(data),
-                        headers = {'X-Auth-Key': token, 'X-Auth-Email': auth_email})
+                        headers={'Authorization': 'Bearer ' + token })
     if resp.status_code != 200:
         logger.warning("ERROR:" + str(resp.status_code) + "-" + str(resp.content))
         return str(resp.status_code)
@@ -129,8 +134,8 @@ def search_video(name):
 
 def delete_video(video_id):
     api_url,account,token,auth_email=setup()
-    resp = requests.delete(api_url + 'stream/' + video_id,
-                    headers = {'X-Auth-Key': token, 'X-Auth-Email': auth_email})
+    resp = requests.delete(api_url + account + '/stream/' + video_id,
+                    headers={'Authorization': 'Bearer ' + token })
     if resp.status_code != 200:
         logger.warning("ERROR:" + str(resp.status_code) + "-" + str(resp.content))
         return str(resp.status_code)

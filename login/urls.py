@@ -1,9 +1,10 @@
-from django.conf.urls import include, url
+from django.urls import path, re_path
+from django.conf.urls import include
 from . import views
 
 urlpatterns = [
-    url(r'^login_modal$', views.login_modal),
-    url(r'^login$', views.login_authentication),
-    url(r'^logout$', views.logout_authentication),
+    re_path(r'^login_modal$', views.login_modal),
+    re_path(r'^login$', views.login_authentication),
+    re_path(r'^logout$', views.logout_authentication),
 
 ]

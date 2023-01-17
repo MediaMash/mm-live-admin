@@ -20,7 +20,6 @@ from django.views.generic.base import TemplateView
 from django.conf.urls import include
 from django.contrib.auth import views as auth_views
 from django.contrib.auth import urls
-from django.conf.urls import url
 from django.conf.urls.static import static, settings
 from login import views
 from rest_framework import permissions
@@ -53,7 +52,7 @@ urlpatterns = [
          name='schema-swagger-ui'),
     path('health_check/', include('health_check.urls')),
 
-    url(r'^$', TemplateView.as_view(template_name='static_pages/index.html'),
+    re_path(r'^$', TemplateView.as_view(template_name='static_pages/index.html'),
         name='home'),
 
     path('video/', include('video.urls')),
