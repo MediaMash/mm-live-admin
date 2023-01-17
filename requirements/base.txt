@@ -11,4 +11,3 @@ PyJWT
 requests
 python-oauth2
 tuspy
-python-cloudflare-stream
