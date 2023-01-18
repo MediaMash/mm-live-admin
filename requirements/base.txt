@@ -7,7 +7,6 @@ anyascii==0.3.1
 asgiref==3.5.2
 beautifulsoup4==4.9.3
 boto3==1.26.37
-botocore==1.29.37
 certifi==2022.6.15
 charset-normalizer==2.1.0
 Django==3.2
