@@ -10,4 +10,5 @@ django-parcel-ssr
 PyLivestream
 django-material
 django-cors-headers
+django-storages
 
