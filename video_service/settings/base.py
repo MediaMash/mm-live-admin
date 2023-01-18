@@ -45,6 +45,8 @@ INSTALLED_APPS_THIRD_PARTIES = [
     'django_filters',
     'crispy_forms',
     'material',
+    'storages',
+    'django_social_share',
 
     # Health check
     'health_check',

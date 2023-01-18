@@ -1,4 +1,4 @@
-Django~=2.1.7
+Django~=3.2
 django-filter==2.1.0
 django-health-check==3.8.0
 djangorestframework==3.9.1
