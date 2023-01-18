@@ -11,4 +11,9 @@ PyLivestream
 django-material
 django-cors-headers
 django-storages
+django-colorful
+django-el-pagination
+django-storages
+boto3
+django-social-share==2.2.1
 
