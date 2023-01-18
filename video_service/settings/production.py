@@ -13,7 +13,6 @@ MIDDLEWARE_CORS = [
 
 MIDDLEWARE = MIDDLEWARE_CORS + MIDDLEWARE
 
-CORS_ORIGIN_WHITELIST = os.environ['CORS_ORIGIN_WHITELIST']
 
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
@@ -30,14 +29,6 @@ DATABASES = {
 }
 
 
-
-# Security
-# https://docs.djangoproject.com/en/2.0/ref/settings/#allowed-hosts
-
-try:
-    ALLOWED_HOSTS = os.environ['ALLOWED_HOSTS'].split(',')
-except KeyError:
-    ALLOWED_HOSTS = []
 
 # https://docs.djangoproject.com/en/2.0/ref/settings/#secure-proxy-ssl-header
 
