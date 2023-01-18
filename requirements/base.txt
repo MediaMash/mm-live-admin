@@ -16,4 +16,3 @@ django-el-pagination
 django-storages
 boto3
 django-social-share==2.2.1
-
