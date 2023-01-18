@@ -1,9 +1,9 @@
-Django==3.0.14
-django-filter==2.1.0
-django-health-check==3.8.0
-djangorestframework==3.9.1
-psycopg2-binary==2.7.7
-drf-yasg==1.10.2
+Django==3.2.16
+django-filter
+django-health-check
+djangorestframework
+psycopg2-binary
+drf-yasg
 django-crispy-forms
 tuspy
 django-parcel-ssr
@@ -15,4 +15,4 @@ django-colorful
 django-el-pagination
 django-storages
 boto3
-django-social-share==2.2.1
+django-social-share
