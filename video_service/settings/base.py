@@ -54,7 +54,6 @@ INSTALLED_APPS_THIRD_PARTIES = [
 
     # openapi
     'drf_yasg',
-
 ]
 
 INSTALLED_APPS_LOCAL = [

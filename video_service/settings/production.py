@@ -1,18 +1,6 @@
 from .base import *
-
-# CORS to allow external apps auth through OAuth 2
-# https://github.com/ottoyiu/django-cors-headers
-
-INSTALLED_APPS += (
-    'corsheaders',
-)
-
-MIDDLEWARE_CORS = [
-    'corsheaders.middleware.CorsMiddleware',
-]
-
-MIDDLEWARE = MIDDLEWARE_CORS + MIDDLEWARE
-
+import os
+from os.path import join, normpath
 
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
@@ -27,23 +15,6 @@ DATABASES = {
         'PORT': os.environ['DATABASE_PORT'],
     }
 }
-
-
-
-# https://docs.djangoproject.com/en/2.0/ref/settings/#secure-proxy-ssl-header
-
-SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-
-# NGINX and HTTPS
-# https://docs.djangoproject.com/en/2.0/ref/settings/#std:setting-USE_X_FORWARDED_HOST
-
-USE_X_FORWARDED_HOST = True if os.getenv('USE_X_FORWARDED_HOST') == 'True' \
-    else False
-
-# https://docs.djangoproject.com/en/2.0/ref/settings/#secure-proxy-ssl-header
-
-if os.getenv('USE_HTTPS') == 'True':
-    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.environ['SECRET_KEY']
@@ -67,7 +38,6 @@ AWS_SECRET_ACCESS_KEY = os.environ.get("SPACES_SECRET")
 AWS_S3_CUSTOM_DOMAIN = 'cms-static.nyc3.digitaloceanspaces.com' + "/" + AWS_STORAGE_BUCKET_NAME
 AWS_S3_ENDPOINT_URL  = 'https://cms-static.nyc3.digitaloceanspaces.com'
 
-
 MEDIA_URL = AWS_S3_CUSTOM_DOMAIN + "/" + AWS_STORAGE_BUCKET_NAME + "/"
 DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 
@@ -76,6 +46,8 @@ STATIC_URL = f'https://{AWS_S3_ENDPOINT_URL}/{AWS_STORAGE_BUCKET_NAME}/{AWS_LOCA
 STATICFILES_STORAGE = 'storages.backends.s3boto3.S3StaticStorage'
 
 AWS_DEFAULT_ACL = 'public-read'
+
+ALLOWED_HOSTS = ['mm-live-admin-w3awf.ondigitalocean.app', 'nullrecords.com', '127.0.0.1', '[::1]','video.nullrecords.com',]
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False

@@ -13,6 +13,6 @@ django-cors-headers
 django-storages
 django-colorful
 django-el-pagination
-django-storages
+django-storages==1.12.3
 boto3
 django-social-share==2.2.1
