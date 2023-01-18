@@ -1,5 +1,5 @@
 Django==3.2.16
-django-crispy-forms==1.13.0
+django-crispy-forms
 django-filter
 django-health-check
 django-material
@@ -11,3 +11,7 @@ PyJWT
 requests
 python-oauth2
 tuspy
+django-parcel-ssr
+PyLivestream
+django-cors-headers
+
