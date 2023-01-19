@@ -32,3 +32,4 @@ sqlparse==0.4.2
 tablib==3.2.1
 telepath==0.2
 urllib3==1.26.10
+boto3
