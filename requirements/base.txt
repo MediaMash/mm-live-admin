@@ -1,5 +1,4 @@
-
-psycopg2-binary
+mysqlclient==2.1.0
 tuspy
 django-material
 anyascii==0.3.1

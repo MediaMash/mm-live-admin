@@ -1,23 +1,61 @@
+# Use an official Python runtime based on Debian 10 "buster" as a parent image.
 FROM python:3.8.1-slim-buster
 
-RUN apk update
+# Add user that will be used in the container.
+RUN useradd mash
 
-WORKDIR /code
+# Port used by this container to serve HTTP.
+EXPOSE 8000
 
-RUN apk add --no-cache postgresql-libs bash
-RUN apk add --no-cache --virtual .build-deps git python-dev gcc musl-dev postgresql-dev libffi-dev libressl-dev
+# Set environment variables.
+# 1. Force Python stdout and stderr streams to be unbuffered.
+# 2. Set PORT variable that is used by Gunicorn. This should match "EXPOSE"
+#    command.
+ENV PYTHONUNBUFFERED=1 \
+    PORT=8000
 
-RUN pip install --upgrade pip
-COPY ./requirements/base.txt requirements/base.txt
-COPY ./requirements/production.txt requirements/production.txt
-RUN pip install -r requirements/production.txt --no-cache-dir
+# Install system packages required by Wagtail and Django.
+RUN apt-get update --yes --quiet && apt-get install --yes --quiet --no-install-recommends \
+    build-essential \
+    libpq-dev \
+    libmariadbclient-dev \
+    libjpeg62-turbo-dev \
+    zlib1g-dev \
+    libwebp-dev \
+    python3-dev \
+    default-libmysqlclient-dev \
+    default-mysql-client \
+    build-essential \
+ && rm -rf /var/lib/apt/lists/*
 
-ADD . /code
+# Install the application server.
+RUN pip install "gunicorn==20.0.4"
 
-# Collecting static files
-RUN ./scripts/run-collectstatic.sh
+# Install the project requirements.
+COPY requirements.txt /
+RUN pip install -r /requirements.txt
 
-RUN apk del .build-deps
+# Use /app folder as a directory where the source code is stored.
+WORKDIR /app
 
-EXPOSE 8080
-ENTRYPOINT ["bash", "/code/docker-entrypoint.sh"]
+# Set this directory to be owned by the "wagtail" user. This Wagtail project
+# uses SQLite, the folder needs to be owned by the user that
+# will be writing to the database file.
+RUN chown mash:mash /app
+
+# Copy the source code of the project into the container.
+COPY --chown=mash:mash . .
+
+# Use user "wagtail" to run the build commands below and the server itself.
+USER mash
+
+# Runtime command that executes when "docker run" is called, it does the
+# following:
+#   1. Migrate the database.
+#   2. Start the application server.
+# WARNING:
+#   Migrating database at the same time as starting the server IS NOT THE BEST
+#   PRACTICE. The database should be migrated manually or using the release
+#   phase facilities of your hosting platform. This is used only so the
+#   mash instance can be started with a simple "docker run" command.
+CMD set -xe; gunicorn video_service.wsgi:application

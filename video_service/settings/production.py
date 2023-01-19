@@ -7,12 +7,12 @@ from os.path import join, normpath
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.{}'.format(os.environ['DATABASE_ENGINE']),
-        'NAME': os.environ['DATABASE_NAME'],
-        'USER': os.environ['DATABASE_USER'],
-        'PASSWORD': os.getenv('DATABASE_PASSWORD'),
-        'HOST': os.getenv('DATABASE_HOST', 'localhost'),
-        'PORT': os.environ['DATABASE_PORT'],
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'media-mash',
+        'PASSWORD': os.environ.get("PASSWORD"),
+        'USER': 'media-mash',
+        'HOST': 'db-mysql-nyc3-97229-do-user-2508039-0.b.db.ondigitalocean.com',
+        'PORT': '25060',
     }
 }
 
