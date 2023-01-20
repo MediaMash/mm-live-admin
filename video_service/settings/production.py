@@ -9,7 +9,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'media-mash',
-        'PASSWORD': os.environ.get("PASSWORD"),
+        'PASSWORD': os.environ.get("DATABASE_PASSWORD"),
         'USER': 'media-mash',
         'HOST': 'db-mysql-nyc3-97229-do-user-2508039-0.b.db.ondigitalocean.com',
         'PORT': '25060',
