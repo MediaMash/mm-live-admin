@@ -28,11 +28,16 @@ RUN apt-get update --yes --quiet && apt-get install --yes --quiet --no-install-r
     build-essential \
  && rm -rf /var/lib/apt/lists/*
 
-# Install the application server.
-RUN pip install "gunicorn==20.0.4"
+
 
 # Install the project requirements.
-RUN pip install -r /requirements/production.txt
+RUN pip install --upgrade pip
+COPY ./requirements/base.txt requirements/base.txt
+COPY ./requirements/production.txt requirements/production.txt
+RUN pip install -r requirements/production.txt --no-cache-dir
+
+# Install the application server.
+RUN pip install "gunicorn==20.0.4"
 
 # Use /app folder as a directory where the source code is stored.
 WORKDIR /app
