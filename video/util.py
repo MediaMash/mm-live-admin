@@ -1,7 +1,6 @@
 import requests
 import json
 from tusclient import client
-import tus
 from django.conf import settings
 from .models import Provider
 # Get an instance of a logger
@@ -10,6 +9,7 @@ logger = logging.getLogger(__name__)
 
 """
 Set account variables for cloudflare api access
+https://developers.cloudflare.com/api/operations/stream-videos-list-videos
 """
 def setup():
     cloudflare = Provider.objects.all().filter(name="Internal").first()
@@ -39,10 +39,6 @@ def upload_video(file, path):
     # Set Authorization headers if it is required
     # by the tus server.
     """
-    tus-upload --chunk-size 5242880 --header X-Auth-Key {api-key}
-    --header X-Auth-Email {email} {path-to-video}
-    https://api.cloudflare.com/client/v4/accounts/{account_id}/stream
-
     Formats:
     MP4, MKV, MOV, AVI, FLV, MPEG-2 TS, MPEG-2 PS, MXF, LXF, GXF, 3GP, WebM, MPG, QuickTime
     """
@@ -67,17 +63,11 @@ def upload_video(file, path):
 
         video_url = response[:response.find('?', 0)]
         
-    
     return video_url
    
     
 def check_encoding(video_id):
-    """
-    curl 'https://api.cloudflare.com/client/v4/accounts/{account_id}/stream/{video-id}' \
-        -H 'X-Auth-Email: {email}' \
-        -H 'X-Auth-Key: {api-key}' \
-        -H 'Content-Type: application/json'
-    """
+    # https://api.cloudflare.com/client/v4/accounts/{account_id}/stream/{video-id}
     api_url,account,token,auth_email=setup()
     resp = requests.get(api_url + account + '/stream/' + video_id ,
                     headers={'Authorization': 'Bearer ' + token })
@@ -105,12 +95,7 @@ def get_embed_code(video_id):
 
 
 def get_details(video_id):
-    """
-    curl -X GET "https://api.cloudflare.com/client/v4/accounts/023e105f4ecef8ad9ca31a8372d0c353/stream/ea95132c15732412d22c1476fa83f27a" \
-     -H "X-Auth-Email: user@example.com" \
-     -H "X-Auth-Key: c2547eb745079dac9320b638f5e225cf483cc5cfdda41" \
-     -H "Content-Type: application/json"
-    """
+    # https://api.cloudflare.com/client/v4/accounts/023e105f4ecef8ad9ca31a8372d0c353/stream/ea95132c15732412d22c1476fa83f27a
     api_url,account,token,auth_email=setup()
     print(api_url + account + '/stream/' + video_id)
     resp = requests.get(api_url + account + '/stream/' + video_id,
@@ -124,7 +109,6 @@ def get_details(video_id):
 def search_video(name):
     api_url,account,token,auth_email=setup()
     resp = requests.get(api_url + account  + '/media?search=' + name,
-                        data = json.dumps(data),
                         headers={'Authorization': 'Bearer ' + token })
     if resp.status_code != 200:
         logger.warning("ERROR:" + str(resp.status_code) + "-" + str(resp.content))
@@ -141,3 +125,14 @@ def delete_video(video_id):
         return str(resp.status_code)
     else:
         return str(resp.status_code)
+
+def list_vidoes():
+    # https://api.cloudflare.com/client/v4/accounts/{account_identifier}/stream
+    api_url,account,token,auth_email=setup()
+    resp = requests.get(api_url + account  + '/stream',
+                        headers={'Authorization': 'Bearer ' + token })
+    if resp.status_code != 200:
+        logger.warning("ERROR:" + str(resp.status_code) + "-" + str(resp.content))
+        return str(resp.status_code)
+    else:
+        return str(resp)
