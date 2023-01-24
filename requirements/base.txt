@@ -10,7 +10,7 @@ boto3==1.26.49
 botocore==1.29.49
 certifi==2022.12.7
 charset-normalizer==3.0.1
-Django==3.2
+Django==3.2.16
 django-crispy-forms==1.14.0
 django-el-pagination==3.3.0
 django-filter==21.1
