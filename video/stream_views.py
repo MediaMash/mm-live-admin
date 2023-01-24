@@ -194,7 +194,7 @@ def check_view(request):
 
 
 from django.shortcuts import render, redirect
-from ffmpeg import FFmpeg
+import ffmpeg
 
 def go_live(request):
     # Get the streaming platform, i.e. YouTube or Twitch
@@ -202,7 +202,7 @@ def go_live(request):
     # Get the HLS stream URL
     hls_stream = request.POST.get('hls_stream')
     try:
-        ff = FFmpeg(inputs={hls_stream: None}, outputs={
+        ff = ffmpeg(inputs={hls_stream: None}, outputs={
             f'rtmp://a.rtmp.youtube.com/live2/{YOUR_YOUTUBE_STREAM_KEY}': None,
             f'rtmp://live-{YOUR_TWITCH_REGION}.twitch.tv/app/{YOUR_TWITCH_STREAM_KEY}': None
         })
