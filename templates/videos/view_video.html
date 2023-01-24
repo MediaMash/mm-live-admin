@@ -50,8 +50,20 @@
       </p>
     </video>
   </div><!-- close card body -->
-</div><!-- close card shadom
+</div><!-- close card shadom -->
 
+  <form method="post" action="{% url 'go_live' %}">
+    {% csrf_token %}
+    <label>Video Stream: <input type="text" name="video_file" value="{{ getVideo.playback_hls }}"></label><br/>
+    <label>Platform Stream Key: <input type="text" name="stream_key" value="{{ getVideo.stream_key }}"></label><br/>
+    <label>Streaming platform: 
+      <select name="platform">
+        <option value="youtube">YouTube</option>
+        <option value="twitch">Twitch</option>
+      </select>
+    </label>
+    <input type="submit" value="Go Live">
+</form>
 
 
 {% endblock content %}

@@ -18,6 +18,8 @@ from .models import LiveStream
 from .forms import LiveStreamForm
 from .util import get_details
 
+from video.models import Provider 
+
 from django.contrib.auth.models import User
 
 @method_decorator(login_required, name='dispatch')
@@ -196,25 +198,43 @@ def check_view(request):
 from django.shortcuts import render, redirect
 import ffmpeg
 
-def go_live(request):
+def go_live(request, format=None):
+
+    # Get the video file path or HLS stream URL
+    video_file = request.POST.get('video_file')
     # Get the streaming platform, i.e. YouTube or Twitch
     platform = request.POST.get('platform')
-    # Get the HLS stream URL
-    hls_stream = request.POST.get('hls_stream')
-    try:
-        ff = ffmpeg(inputs={hls_stream: None}, outputs={
-            f'rtmp://a.rtmp.youtube.com/live2/{YOUR_YOUTUBE_STREAM_KEY}': None,
-            f'rtmp://live-{YOUR_TWITCH_REGION}.twitch.tv/app/{YOUR_TWITCH_STREAM_KEY}': None
-        })
-        # Start the stream
-        ff.run()
-    except Exception as e:
-        print(f'An error occurred: {e}')
-        return render(request, 'error.html')
+    youtube = Provider.objects.filter(name="YouTube").first()
     if platform == 'youtube':
-        return redirect(f'https://www.youtube.com/watch?v={YOUR_YOUTUBE_STREAM_KEY}')
+        youtube = Provider.objects.filter(name="YouTube").first()
+        api_url = youtube.api_url
+        account_key = youtube.token
+        stream_key = youtube.stream_key
+        stream = None
+        try:
+            stream = ffmpeg.input('rtmp://a.rtmp.youtube.com/live2/' + stream_key)
+            stream = ffmpeg.output(stream, 'rtmp://a.rtmp.youtube.com/live2/' + stream_key)
+            # Start the stream
+            ffmpeg.run(stream)
+        except Exception as e:
+            print(f'An error occurred: {e}')
+            return render(request, '500.html', {'error': e})
+        return redirect(f'https://www.youtube.com/watch?v={stream_key}')
+
     elif platform == 'twitch':
-        return redirect(f'https://www.twitch.tv/{YOUR_TWITCH_USERNAME}')
+        twitch = Provider.objects.filter(name="Twitch").first()
+        account_key = twitch.account_key
+        twitch_region = twitch.stream_region
+        twitch_username = twitch.stream_user_name
+        try:
+            ff = ffmpeg(inputs={video_file: None}, outputs={f'rtmp://live-{twitch_region}.twitch.tv/app/{account_key}': None})
+            # Start the stream
+            ff.run()
+        except Exception as e:
+            print(f'An error occurred: {e}')
+            return render(request, '500.html', {'error': e})
+        
+        return redirect(f'https://www.twitch.tv/{twitch_username}')
     else:
         return render(request, '500.html', {'error': 'Invalid platform'})
 

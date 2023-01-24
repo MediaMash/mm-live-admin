@@ -52,6 +52,7 @@ urlpatterns = [
          name='schema-swagger-ui'),
     path('health_check/', include('health_check.urls')),
 
+
     re_path(r'^$', TemplateView.as_view(template_name='static_pages/index.html'),
         name='home'),
 

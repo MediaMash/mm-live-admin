@@ -1,7 +1,9 @@
 from django.urls import path, re_path
+from django.conf.urls import url
 from django.conf.urls import include
 from .views import VideoList, VideoUpdate, VideoCreate, VideoDelete, VideoView, VideoPlayer
 from .stream_views import LiveStreamList, LiveStreamUpdate, LiveStreamCreate, LiveStreamDelete, LiveStreamView, LiveStreamPlayer
+from . import stream_views
 
 urlpatterns = [
 
@@ -13,6 +15,8 @@ urlpatterns = [
     re_path(r'^video_view/(?P<pk>\w+)/$', VideoView.as_view(), name='video_view'),
     re_path(r'^video_player/$', VideoPlayer.as_view(), name='player_view'),
     re_path(r'^video_delete/(?P<pk>\w+)/$', VideoDelete.as_view(), name='video_delete'),
+    # platform stream
+    url(r'^go_live/$', stream_views.go_live, name='go_live'),
     # LiveStream
     re_path(r'^$', LiveStreamList.as_view(), name='livestream_list'),
     re_path(r'^livestream_list/$', LiveStreamList.as_view(), name='livestream_list'),
@@ -21,4 +25,5 @@ urlpatterns = [
     re_path(r'^livestream_view/(?P<pk>\w+)/$', LiveStreamView.as_view(), name='livestream_view'),
     re_path(r'^livestream_player/$', LiveStreamPlayer.as_view(), name='player_view'),
     re_path(r'^livestream_delete/(?P<pk>\w+)/$', LiveStreamDelete.as_view(), name='livestream_delete'),
+
 ]
