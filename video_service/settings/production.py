@@ -50,4 +50,4 @@ AWS_DEFAULT_ACL = 'public-read'
 ALLOWED_HOSTS = ['mm-live-admin-w3awf.ondigitalocean.app', 'nullrecords.com', '127.0.0.1', '[::1]','video.nullrecords.com',]
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
