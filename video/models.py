@@ -128,7 +128,7 @@ class Video(models.Model):
                 video_details=details['result']
                 self.playback_hls = video_details['playback']['hls']
                 self.playback_dash = video_details['playback']['dash']
-                self.stream_url = video_details['playback']['preview']
+                self.stream_url = video_details['preview']
                 self.status = video_details['status']
         super(Video, self).save()
 

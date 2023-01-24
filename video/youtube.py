@@ -3,6 +3,7 @@ import json
 from tusclient import client
 from django.conf import settings
 from video.models import Provider 
+from django.shortcuts import render, redirect
 
 # Get an instance of a logger
 import logging
@@ -71,3 +72,41 @@ def update_video():
     --data '{}' \
     --compressed
     """
+
+from googleapiclient.discovery import build
+from googleapiclient.errors import HttpError
+from googleapiclient.http import MediaFileUpload
+
+def upload_video_post(request):
+    try:
+        # Build the service object
+        youtube = build('youtube', 'v3', developerKey=account_key)
+
+        # Get the video file and meta data
+        video_file = request.FILES['video_file']
+        video_name = request.POST.get('video_name')
+        video_description = request.POST.get('video_description')
+
+        # Create the MediaFileUpload object
+        media = MediaFileUpload(video_file, mimetype='video/*')
+
+        # Create the video
+        video = youtube.videos().insert(
+            part='snippet,status',
+            body={
+                'snippet': {
+                    'title': video_name,
+                    'description': video_description,
+                    'categoryId': '22'
+                },
+                'status': {
+                    'privacyStatus': 'private',
+                    },
+            },
+            media_body=media
+        ).execute()
+        return redirect(f'https://www.youtube.com/watch?v={video["id"]}')
+    except HttpError as error:
+        print(f'An error occurred: {error}')
+        return render(request, '500.html', {'error': 'Invalid platform'})
+

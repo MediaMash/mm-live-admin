@@ -189,3 +189,4 @@ def logout_view(request):
 
 def check_view(request):
     return HttpResponse("Hostname "+request.get_host())
+

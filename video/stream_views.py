@@ -191,3 +191,30 @@ def logout_view(request):
 
 def check_view(request):
     return HttpResponse("Hostname "+request.get_host())
+
+
+from django.shortcuts import render, redirect
+from ffmpeg import FFmpeg
+
+def go_live(request):
+    # Get the streaming platform, i.e. YouTube or Twitch
+    platform = request.POST.get('platform')
+    # Get the HLS stream URL
+    hls_stream = request.POST.get('hls_stream')
+    try:
+        ff = FFmpeg(inputs={hls_stream: None}, outputs={
+            f'rtmp://a.rtmp.youtube.com/live2/{YOUR_YOUTUBE_STREAM_KEY}': None,
+            f'rtmp://live-{YOUR_TWITCH_REGION}.twitch.tv/app/{YOUR_TWITCH_STREAM_KEY}': None
+        })
+        # Start the stream
+        ff.run()
+    except Exception as e:
+        print(f'An error occurred: {e}')
+        return render(request, 'error.html')
+    if platform == 'youtube':
+        return redirect(f'https://www.youtube.com/watch?v={YOUR_YOUTUBE_STREAM_KEY}')
+    elif platform == 'twitch':
+        return redirect(f'https://www.twitch.tv/{YOUR_TWITCH_USERNAME}')
+    else:
+        return render(request, '500.html', {'error': 'Invalid platform'})
+
