@@ -1,6 +1,6 @@
 import requests
 from django.conf import settings
-from .models import Product
+from .models import Product, ProductImage, ShopProvider
 
 
 # Set up the Shopify API URL and access token
