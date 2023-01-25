@@ -1,0 +1,129 @@
+@import 'buttons.css';
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    color: rgb(108, 108, 108);
+}
+
+body{
+    height: 100vh;
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: #fdc3de;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+}
+
+main{
+    width: 90%;
+    height: 90%;
+    margin-top: 20px;
+    background-color: aliceblue;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    flex-wrap: wrap;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.wrapper{
+    width: 450px;
+    height: 220px;/* 
+    background-color: rgb(172, 123, 33); */
+}
+
+.player{
+    position: relative;
+    width: 100%;
+}
+
+.player video{
+    inline-size: 100%;
+    aspect-ratio: 16/9;
+    border-radius: 5px;
+    vertical-align: middle;
+    object-fit: cover; /* importante */
+}
+
+.player-title{
+    color: white;
+    position: absolute;
+    inset-block-start: 0;
+    inset-inline-start: 20px;
+}
+
+.player-actions{
+    position: absolute;
+    inset: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+}
+
+.player-progress{
+    position: absolute;
+    inset-block-end: 0;
+    inset-inline: 0;
+    display: flex;
+    padding: 10px;
+}
+
+.player-progress input{
+    flex: 1;
+}
+
+.player-overlay{
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transition: .4s opacity;
+}
+.player:hover .player-overlay{
+    opacity: 1;
+}
+
+/* video list secction */
+.videoList{
+    height: 250px;/* 
+    background-color: #ff90c4; */
+    border-right: 2px solid #fdc3de;
+    padding: 5px;
+    border-radius: 5px;
+    overflow: scroll;
+    overflow-x: hidden;
+}
+
+.videoList li{
+    list-style: none;
+    background-color: #ffffffb9;
+    display: flex;
+    border-radius: 5px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    column-gap: 10px;
+    cursor: pointer;
+}
+
+.videoList_element h3{
+    margin: 5px 5px 5px 0;
+}
+
+.videos{
+    width: 170px;
+    height: 94px;
+    border-radius: 5px;
+    object-fit: cover;
+}
+
+.videoList::-webkit-scrollbar {
+	width: 7px;
+}
+
+.videoList::-webkit-scrollbar-thumb {
+	background-color: #fdc3de;
+	border-radius: 5px;
+}

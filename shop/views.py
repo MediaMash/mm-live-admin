@@ -19,6 +19,8 @@ from django.contrib.auth.models import User
 from .models import Product
 from .forms import ProductForm
 
+from .util import getProducts
+
 @method_decorator(login_required, name='dispatch')
 class IndexView(LoginRequiredMixin, TemplateView):
     template_name = 'index.html'
@@ -145,3 +147,13 @@ class ProductDelete(DeleteView):
         return self.render_to_response(self.get_context_data(form=form))
 
     form_class = ProductForm
+
+
+def add_provider_products(request):
+    product_added = getProducts()
+
+    if getProducts:
+        return HttpResponse(json.dumps(product_added), content_type="application/json")
+    else:
+        message = "No Products were added, please confirm you have set up a Third Party shop provider with your Admin."
+        return HttpResponse(json.dumps(message), content_type="application/json")

@@ -13,9 +13,13 @@ logger = logging.getLogger(__name__)
 
 fs = FileSystemStorage(location=settings.MEDIA_ROOT + '/images/')
 
+PROVIDER_NAME_CHOICES = (
+    ("Shopify", "Shopify"),
+    ("Amazon", "Amazon"),
+)
+
 class ShopProvider(models.Model):
-    provider = models.ForeignKey(Provider, blank=True, null=True, on_delete=models.CASCADE, help_text="Extneral or Internal Stream Host")
-    name = models.CharField(blank=True, null=True, max_length=255, help_text="Name of Store")
+    name = models.CharField(blank=True, null=True, max_length=255, help_text="Name of Store", choices={PROVIDER_NAME_CHOICES})
     link = models.CharField(blank=True, null=True, max_length=255, help_text="Link to Store")
     api_key = models.CharField(blank=True, null=True, max_length=255, help_text="API key for store")
     api_password = models.CharField(blank=True, null=True, max_length=255, help_text="API Password for Auth")
