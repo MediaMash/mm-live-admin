@@ -58,6 +58,7 @@ urlpatterns = [
 
     path('video/', include('video.urls')),
     path('login/', include('login.urls')),
+    path('shop/', include('shop.urls')),
 
     # local login
     path('accounts/', include('django.contrib.auth.urls')),

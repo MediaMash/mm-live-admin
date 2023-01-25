@@ -204,21 +204,27 @@ def go_live(request, format=None):
     video_file = request.POST.get('video_file')
     # Get the streaming platform, i.e. YouTube or Twitch
     platform = request.POST.get('platform')
+    stream_key = request.POST.get('stream_key')
     youtube = Provider.objects.filter(name="YouTube").first()
     if platform == 'youtube':
         youtube = Provider.objects.filter(name="YouTube").first()
         api_url = youtube.api_url
         account_key = youtube.token
-        stream_key = youtube.stream_key
+        if stream_key == None:
+            stream_key = youtube.stream_key
         stream = None
         try:
-            stream = ffmpeg.input('rtmp://a.rtmp.youtube.com/live2/' + stream_key)
-            stream = ffmpeg.output(stream, 'rtmp://a.rtmp.youtube.com/live2/' + stream_key)
+            youtube_url = 'rtmp://a.rtmp.youtube.com/live2/' + stream_key
+
+            # Create the stream object
+            stream = ffmpeg.input(video_file)
+            # Define the output stream
+            output = ffmpeg.output(stream, youtube_url, vcodec='copy', acodec='copy')
             # Start the stream
-            ffmpeg.run(stream)
+            ffmpeg.run(output)
         except Exception as e:
             print(f'An error occurred: {e}')
-            return render(request, '500.html', {'error': e})
+            
         return redirect(f'https://www.youtube.com/watch?v={stream_key}')
 
     elif platform == 'twitch':
@@ -232,7 +238,6 @@ def go_live(request, format=None):
             ff.run()
         except Exception as e:
             print(f'An error occurred: {e}')
-            return render(request, '500.html', {'error': e})
         
         return redirect(f'https://www.twitch.tv/{twitch_username}')
     else:

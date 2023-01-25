@@ -1,4 +1,17 @@
 from django.db import models
+from django.contrib import admin
+from django.contrib.auth.models import User
+from django.utils import timezone
+import logging
+from django.conf import settings
+from django.contrib import messages
+import json
+
+from django.core.files.storage import FileSystemStorage
+# Get an instance of a logger
+logger = logging.getLogger(__name__)
+
+fs = FileSystemStorage(location=settings.MEDIA_ROOT + '/images/')
 
 # Create your models here.
 class Product(models.Model):

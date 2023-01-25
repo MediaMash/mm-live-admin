@@ -1,10 +1,15 @@
 from django.urls import path, re_path
+from django.conf.urls import url
 from django.conf.urls import include
-from . import views
+from .views import ProductList, ProductUpdate, ProductCreate, ProductDelete
 
 urlpatterns = [
-    re_path(r'^login_modal$', views.login_modal),
-    re_path(r'^login$', views.login_authentication),
-    re_path(r'^logout$', views.logout_authentication),
+
+    # Product
+    re_path(r'^$', ProductList.as_view(), name='product_list'),
+    re_path(r'^product_list/$', ProductList.as_view(), name='product_list'),
+    re_path(r'^product_add/$', ProductCreate.as_view(), name='product_add'),
+    re_path(r'^product_update/(?P<pk>\w+)/$', ProductUpdate.as_view(), name='product_update'),
+    re_path(r'^product_delete/(?P<pk>\w+)/$', ProductDelete.as_view(), name='product_delete'),
 
 ]

@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block bread_crumb %}
+<!-- breadcrumb -->
+<ul class="navbar-nav ml-auto">
+  <li class="nav-item"><a class="nav-link" href="/shop/product_list/">Product List</a></li>
+  <li class="nav-item active"><a class="nav-link" href="#">Product Form</a></li>
+</ul>
+{% endblock %}
+{% block page_title %}Product Form{% endblock %}
+
+
+{% block content %}
+    {% if form.errors %}
+        <p>
+        {% for field in form %}
+            {% for error in field.errors %}
+                    <strong><i>{{ field.label }}</i> - {{ error|escape }}</strong>&nbsp;
+            {% endfor %}
+        {% endfor %}
+      </p>
+        {% for error in form.non_field_errors %}
+            <p>
+                <strong>{{ error|escape }}</strong>
+            </p>
+        {% endfor %}
+    {% endif %}
+	{% csrf_token %}
+    {% load crispy_forms_tags %}
+    {% crispy form %}
+
+{% endblock content %}

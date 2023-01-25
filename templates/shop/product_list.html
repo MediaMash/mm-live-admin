@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% block bread_crumb %}
+<!-- breadcrumb -->
+<ul class="navbar-nav ml-auto">
+  <li class="nav-item"><a class="nav-link" href="/shop/product_add/">Create a Product</a></li>
+  <li class="nav-item active"><a class="nav-link" href="#">Product List</a></li>
+</ul>
+
+{% endblock %}
+
+
+{% block content %}
+<div>
+<br/>
+</div>
+
+<!-- DataTable -->
+<div class="card shadow mb-4">
+  <div class="card-body">
+    <div>
+      <a href="/shop/product_add/" class="btn btn-primary btn-sm">Add New Product</a>
+    </div>
+    <br/>
+    <div class="table-responsive">
+      <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Link</th>
+            <th>Status</th>
+            <th>Date Added</th>
+            <th>Date Last Edited</th>
+            <th>&nbsp;</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for item in getProducts %}
+          <tr>
+            <td><a href="/shop/product_update/{{ item.id }}">{{ item.name }}</a></td>
+            <td>{{item.description}}</td>
+            <td>{{item.link}}</td>
+            <td>{{item.status}}</td>
+            <td>{{ item.created }}</td>
+            <td>{{ item.updated }}</td>
+            <td>
+              <div class="btn-group" role="group" aria-label="Basic example">
+                  <a href="/shop/product_update/{{ item.id }}"  class="btn btn-secondary btn-sm">Edit</a>
+                  <a href="/shop/product_delete/{{ item.id }}/" class="btn btn-warning btn-sm"> Delete</a>
+              </div>
+            </td>
+          </tr>
+
+          {% empty %}
+          <tr>
+            <td colspan="8">
+              <li class="list-group-item">No Products yet.</li>
+            </td>
+          </tr>
+          {% endfor %}
+
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+
+
+{% endblock content %}

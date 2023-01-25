@@ -1,11 +1,23 @@
-from django.shortcuts import render
-from django.core import serializers
-
 import json
-from django.http import HttpResponse
-from django.contrib.auth.models import User
-from django.contrib.auth import authenticate, login, logout
+import warnings
+import requests
+from django.conf import settings
+from django.contrib import messages
+from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.models import Group
+from django.http import HttpResponse, HttpResponseRedirect
+from django.shortcuts import render, get_object_or_404
+from django.urls import reverse
+from django.utils.decorators import method_decorator
+from django.views.generic.base import TemplateView, View
+from django.views.generic.edit import CreateView, UpdateView, DeleteView, View
+from django.views.generic.list import ListView
+
+from django.contrib.auth.models import User
+from .models import Product
+from .forms import ProductForm
 
 @method_decorator(login_required, name='dispatch')
 class IndexView(LoginRequiredMixin, TemplateView):
@@ -14,33 +26,33 @@ class IndexView(LoginRequiredMixin, TemplateView):
 @method_decorator(login_required, name='dispatch')
 class ProductList(ListView):
     """
-    Video Report filtered by project
+    Product Report filtered by project
     """
     model = Product
-    template_name = 'videos/video_list.html'
+    template_name = 'shop/product_list.html'
 
     def get(self, request, *args, **kwargs):
         get_user = User.objects.all().filter(username=request.user.username)
-        get_videos = Product.objects.all()
+        get_products = Product.objects.all()
 
-        return render(request, self.template_name, {'getProduct': get_videos})
+        return render(request, self.template_name, {'getProducts': get_products})
 
 
 
 @method_decorator(login_required, name='dispatch')
-class ProductVideoCreate(CreateView):
+class ProductCreate(CreateView):
     """
-    Using Video Form for new Video per user
+    Using Product Form for new Product per user
     """
-    model = ProductVideo
-    template_name = 'videos/video_form.html'
+    model = Product
+    template_name = 'shop/product_form.html'
 
     def dispatch(self, request, *args, **kwargs):
-        return super(ProductVideoCreate, self).dispatch(request, *args, **kwargs)
+        return super(ProductCreate, self).dispatch(request, *args, **kwargs)
 
     # add the request to the kwargs
     def get_form_kwargs(self):
-        kwargs = super(ProductVideoCreate, self).get_form_kwargs()
+        kwargs = super(ProductCreate, self).get_form_kwargs()
         kwargs['request'] = self.request
         return kwargs
 
@@ -60,27 +72,27 @@ class ProductVideoCreate(CreateView):
 
     def form_valid(self, form):
         form.save()
-        messages.success(self.request, 'Success, ProductVideo Created!')
-        latest = ProductVideo.objects.latest('id')
-        redirect_url = '/ProductVideo/video_update/' + str(latest.id)
+        messages.success(self.request, 'Success, Product Created!')
+        latest = Product.objects.latest('id')
+        redirect_url = '/shop/product_update/' + str(latest.id)
         return HttpResponseRedirect(redirect_url)
 
-    form_class = ProductVideoForm
+    form_class = ProductForm
 
 @method_decorator(login_required, name='dispatch')
-class ProductVideoUpdate(UpdateView):
+class ProductUpdate(UpdateView):
     """
-    ProductVideo Form Update an existing ProductVideo
+    Product Form Update an existing Product
     """
-    model = ProductVideo
-    template_name = 'videos/video_form.html'
+    model = Product
+    template_name = 'shop/Product_form.html'
 
     def dispatch(self, request, *args, **kwargs):
-        return super(ProductVideoUpdate, self).dispatch(request, *args, **kwargs)
+        return super(ProductUpdate, self).dispatch(request, *args, **kwargs)
 
     # add the request to the kwargs
     def get_form_kwargs(self):
-        kwargs = super(ProductVideoUpdate, self).get_form_kwargs()
+        kwargs = super(ProductUpdate, self).get_form_kwargs()
         kwargs['request'] = self.request
         return kwargs
 
@@ -100,24 +112,24 @@ class ProductVideoUpdate(UpdateView):
 
     def form_valid(self, form):
         form.save()
-        messages.success(self.request, 'Success, ProductVideo Updated!')
-        latest = ProductVideo.objects.latest('id')
-        redirect_url = '/video/video_update/' + str(latest.id)
+        messages.success(self.request, 'Success, Product Updated!')
+        latest = Product.objects.latest('id')
+        redirect_url = '/shop/product_update/' + str(latest.id)
         return HttpResponseRedirect(redirect_url)
 
-    form_class = ProductVideoForm
+    form_class = ProductForm
 
 @method_decorator(login_required, name='dispatch')
-class ProductVideoDelete(DeleteView):
+class ProductDelete(DeleteView):
     """
-    ProductVideo Form Delete an existing ProductVideo
+    Product Form Delete an existing Product
     """
-    model = ProductVideo
-    template_name = 'videos/video_confirm_delete.html'
-    success_url = "/video/video_list"
+    model = Product
+    template_name = 'shop/product_confirm_delete.html'
+    success_url = "/shop/product_list"
 
     def dispatch(self, request, *args, **kwargs):
-        return super(VideoDelete, self).dispatch(request, *args, **kwargs)
+        return super(ProductDelete, self).dispatch(request, *args, **kwargs)
 
     def form_invalid(self, form):
 
@@ -129,7 +141,7 @@ class ProductVideoDelete(DeleteView):
 
         form.save()
 
-        messages.success(self.request, 'Success, Video Deleted!')
+        messages.success(self.request, 'Success, Product Deleted!')
         return self.render_to_response(self.get_context_data(form=form))
 
-    form_class = VideoForm
+    form_class = ProductForm

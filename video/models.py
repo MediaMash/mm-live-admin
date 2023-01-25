@@ -6,7 +6,7 @@ import logging
 from django.conf import settings
 from django.contrib import messages
 import json
-
+from shop.models import Product
 from django.core.files.storage import FileSystemStorage
 # Get an instance of a logger
 logger = logging.getLogger(__name__)
@@ -148,6 +148,18 @@ class VideoAdmin(admin.ModelAdmin):
     display = 'Videos'
     list_display = ('name', 'owner')
     list_filter = ('name',)
+
+
+class VideoProduct(models.Model):
+    video = models.ForeignKey(Video, blank=True, null=True, on_delete=models.CASCADE, help_text="Video")
+    product = models.ForeignKey(Product, blank=True, null=True, on_delete=models.CASCADE, help_text="Product to link to Video")
+    run_time_minutes = models.CharField(blank=True, null=True, max_length=255, help_text="When to display product in Video Minutes")
+    run_time_seconds = models.CharField(blank=True, null=True, max_length=255, help_text="When to display product in Video Seconds")
+
+class VideoProductAdmin(admin.ModelAdmin):
+    display = 'Video Products'
+    list_display = ('video', 'product')
+    list_filter = ('video',)
 
 
 class LiveStream(models.Model):
