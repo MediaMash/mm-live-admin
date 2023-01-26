@@ -22,7 +22,6 @@
         class="video-js"
         controls
         preload="auto"
-        poster="//vjs.zencdn.net/v/oceans.png"
         data-setup='{}'>
         <source id="video-src" src="{{ getVideo.playback_hls }}" type="application/x-mpegURL"></source>
       </div>
@@ -36,14 +35,13 @@
     </div>
     <div id="overlay-content" style="display: none;">
       <p>{{ get_video_product.product.name }}
-        <img src="{{ get_video_product.product.image[0] }}">
+        <img src="{{ get_video_product.product.image }}">
         {{ get_video_product.product.link }}
       </p>
-      <p>This is the content that will be shown during the video playback</p>
     </div>
   </div>
   <script>
-    var player = document.getElementById("my-player");
+    var player = videojs("my-player");
     var videoSrc = document.getElementById("video-src");
     var playlist = document.getElementById("playlist");
     var adBottom = document.getElementById("ad-bottom");
@@ -54,12 +52,11 @@
       if (event.target.tagName === "A") {
         var thumbnailUrl = event.target.getAttribute("data-thumbnail");
         var videoUrl = event.target.href;
-        videoSrc.src = videoUrl;
+        player.pause()
+        videoSrc.setAttribute('src', videoUrl);
         player.poster = thumbnailUrl;
         player.load();
-        player.play().catch(function(error){
-            console.log(error)
-        });
+        player.play();
       }
     });
 
