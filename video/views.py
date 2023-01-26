@@ -14,7 +14,7 @@ from django.utils.decorators import method_decorator
 from django.views.generic.base import TemplateView, View
 from django.views.generic.edit import CreateView, UpdateView, DeleteView, View
 from django.views.generic.list import ListView
-from .models import Video
+from .models import Video, VideoProduct
 from .forms import VideoForm
 from .util import get_details
 
@@ -50,8 +50,10 @@ class VideoView(View):
     def get(self, request, *args, **kwargs):
         id = self.kwargs['pk']
         get_video = Video.objects.get(pk=id)
+        get_all_videos = Video.objects.all()
+        get_video_products = VideoProduct.objects.get(video=id).prefetch_releated('product')
         details = get_details(get_video.stream_id)
-        return render(request, self.template_name, {'getVideo': get_video, 'getDetails': details})
+        return render(request, self.template_name, {'getVideo': get_video, 'getDetails': details,'get_all_videos': get_all_videos,'get_video_products': get_video_products})
 
 
 @method_decorator(login_required, name='dispatch')

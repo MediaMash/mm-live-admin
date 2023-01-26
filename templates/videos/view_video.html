@@ -25,15 +25,21 @@
         poster="//vjs.zencdn.net/v/oceans.png"
         data-setup='{}'>
         <source id="video-src" src="{{ getVideo.playback_hls }}" type="application/x-mpegURL"></source>
-
       </div>
       <div class="col-4">
         <ul id="playlist">
-          <li><a href="{{ getVideo.playback_hls }}" data-thumbnail="{{ getVideo.playback_hls }}">Video 1</a></li>
-          <li><a href="{{ getVideo.playback_hls }}" data-thumbnail="{{ getVideo.playback_hls }}">Video 2</a></li>
-          <li><a href="{{ getVideo.playback_hls }}" data-thumbnail="{{ getVideo.playback_hls }}">Video 3</a></li>
+          {% for video in get_all_videos %}
+          <li><a href="{{ video.playback_hls }}" data-thumbnail="{{ video.playback_hls }}">{{ video.name }}</a></li>
+          {% endfor %}
         </ul>
       </div>
+    </div>
+    <div id="overlay-content" style="display: none;">
+      <p>{{ get_video_product.product.name }}
+        <img src="{{ get_video_product.product.image[0] }}">
+        {{ get_video_product.product.link }}
+      </p>
+      <p>This is the content that will be shown during the video playback</p>
     </div>
   </div>
   <script>
@@ -57,13 +63,16 @@
       }
     });
 
-    // Load advertisement into ad overlay
-    function loadAd(ad, url) {
-      var img = new Image();
-      img.src = url;
-      ad.innerHTML = "";
-      ad.appendChild(img);
-    }
+    var video = document.getElementById("my-video");
+    var overlayContent = document.getElementById("overlay-content");
+
+    video.addEventListener("timeupdate", function() {
+      if (this.currentTime >= 30 && this.currentTime < 45) {
+        overlayContent.style.display = "block";
+      } else {
+        overlayContent.style.display = "none";
+      }
+    });
   </script>
 
 
