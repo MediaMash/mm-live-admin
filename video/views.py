@@ -51,7 +51,7 @@ class VideoView(View):
         id = self.kwargs['pk']
         get_video = Video.objects.get(pk=id)
         get_all_videos = Video.objects.all()
-        get_video_products = VideoProduct.objects.get(video=id)
+        get_video_products = VideoProduct.objects.filter(video=id)
         details = get_details(get_video.stream_id)
         return render(request, self.template_name, {'getVideo': get_video, 'getDetails': details,'get_all_videos': get_all_videos,'get_video_products': get_video_products})
 

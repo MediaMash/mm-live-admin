@@ -46,6 +46,26 @@
     padding: 0 10px;
     border-radius: 3px;
   }
+
+  .productlist-meta {
+    font-weight: bold;
+    position: relative;
+    bottom: 10px;
+    right: 10px;
+    z-index: 3;
+    background-color: rgba(0,0,0,.7);
+    color: #fff;
+    padding: 0 10px;
+    border-radius: 3px;
+  }
+
+  .productlist-thumb {
+    position: relative;
+  }
+  .productlist-thumb img {
+    width: 50px;
+  }
+
   .playlist-item-wrapper[data-playing="true"] .playlist-thumb img {
     opacity: 0.5;
   }

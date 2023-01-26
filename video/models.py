@@ -152,7 +152,7 @@ class VideoAdmin(admin.ModelAdmin):
 
 class VideoProduct(models.Model):
     video = models.ForeignKey(Video, blank=True, null=True, on_delete=models.CASCADE, help_text="Video")
-    product = models.ForeignKey(Product, blank=True, null=True, on_delete=models.CASCADE, help_text="Product to link to Video")
+    product = models.ForeignKey(Product, blank=True, null=True, on_delete=models.CASCADE, help_text="Product to link to Video", related_name="video_products")
     run_time_minutes = models.CharField(blank=True, null=True, max_length=255, help_text="When to display product in Video Minutes")
     run_time_seconds = models.CharField(blank=True, null=True, max_length=255, help_text="When to display product in Video Seconds")
 

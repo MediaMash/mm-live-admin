@@ -33,6 +33,19 @@
           </video>
         </div>
         <div class="playlist-products">
+          <div class="product-list">
+              <h2>Related Products</h2>
+              {% for x in get_video_products %}
+                  <div class="card-body">
+                    <div class="productlist-thumb">
+                      <a href="{{ x.product.link }}">
+                      <img src="{{ x.product.image.image_url }}"/>
+                      <div class="productlist-meta"><span>{{ x.product.name }}</span></div>
+                    </a>
+                    </div>
+                  </div>
+              {% endfor %}
+          </div>
         </div>
       </div>
       <div class="playlist-child-videos" id="plylst_upcming"></div>
