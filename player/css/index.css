@@ -7,19 +7,8 @@
     color: rgb(108, 108, 108);
 }
 
-body{
-    height: 100vh;
-    font-family: Arial, Helvetica, sans-serif;
-    background-color: #fdc3de;
-    display: flex;
-    justify-content: center;
-    align-content: center;
-}
-
-main{
-    width: 90%;
-    height: 90%;
-    margin-top: 20px;
+.main {
+    margin-top: 60px;
     background-color: aliceblue;
     display: flex;
     justify-content: space-around;
@@ -30,30 +19,41 @@ main{
 }
 
 .wrapper{
-    width: 450px;
-    height: 220px;/* 
-    background-color: rgb(172, 123, 33); */
+
+    background-color: rgb(172, 123, 33);
 }
 
-.player{
+
+.player {
     position: relative;
+    top: 0;
+    bottom: 0;
     width: 100%;
+    height: 100%; 
+    overflow: hidden;
 }
 
-.player video{
-    inline-size: 100%;
+.player video {
+    /* Make video to at least 100% wide and tall */
+    min-width: 100%; 
+    min-height: 100%; 
+
+    /* Setting width & height to auto prevents the browser from stretching or squishing the video */
+    width: auto;
+    height: auto;
+
+    /* Center the video */
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+
     aspect-ratio: 16/9;
     border-radius: 5px;
     vertical-align: middle;
     object-fit: cover; /* importante */
 }
 
-.player-title{
-    color: white;
-    position: absolute;
-    inset-block-start: 0;
-    inset-inline-start: 20px;
-}
 
 .player-actions{
     position: absolute;

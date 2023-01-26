@@ -47,22 +47,3 @@ $progress.addEventListener('input', HandleInput); /* input es un evento al igual
 function HandleInput(){
     $video.currentTime = $progress.value; /* le asigno al tiempo actual del video el valor de mi barrita  */
 }
-
-
-let player = document.getElementById("player");
-let hlsSource = document.getElementById("hls-source");
-let overlay = document.getElementById("overlay");
-
-function loadVideo(url) {
-  hlsSource.src = url;
-  player.load();
-  player.play();
-}
-
-player.addEventListener("timeupdate", function() {
-  if (player.currentTime >= 20 && player.currentTime < 30) {
-    overlay.style.display = "block";
-  } else {
-    overlay.style.display = "none";
-  }
-});

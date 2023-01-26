@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% block bread_crumb %}
+{% load static %}
 <!-- breadcrumb -->
 <ul class="navbar-nav ml-auto">
   <li class="nav-item"><a class="nav-link" href="/video/video_add/">Create a Video</a></li>
@@ -10,60 +11,103 @@
 
 
 {% block content %}
-<div>
-<br/>
-</div>
+<link rel="stylesheet" href="{% static 'player/css/player.css' %}">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-8">
+        <link href="//vjs.zencdn.net/7.8.2/video-js.min.css" rel="stylesheet">
+        <script src="//vjs.zencdn.net/7.8.2/video.min.js"></script>
+        <video
+        id="my-player"
+        class="video-js"
+        controls
+        preload="auto"
+        poster="//vjs.zencdn.net/v/oceans.png"
+        data-setup='{}'>
+        <source id="video-src" src="{{ getVideo.playback_hls }}" type="application/x-mpegURL"></source>
 
-<!-- DataTable -->
-<div class="card shadow mb-4">
-  <div class="card-header py-3">
-    <h6 class="m-0 font-weight-bold text-primary">{% block page_title %}Your Video{% endblock %}</h6>
+      </div>
+      <div class="col-4">
+        <ul id="playlist">
+          <li><a href="{{ getVideo.playback_hls }}" data-thumbnail="{{ getVideo.playback_hls }}">Video 1</a></li>
+          <li><a href="{{ getVideo.playback_hls }}" data-thumbnail="{{ getVideo.playback_hls }}">Video 2</a></li>
+          <li><a href="{{ getVideo.playback_hls }}" data-thumbnail="{{ getVideo.playback_hls }}">Video 3</a></li>
+        </ul>
+      </div>
+    </div>
   </div>
-  <div class="card-body">
-    <h4>{{ getVideo.name }}</h4>
-    <p>
-      ID: {{ getVideo.id }}<br/>
-      Description: {{getVideo.description}}<br/>
-      Owner: {{getVideo.owner}}<br/>
-      File: {{getVideo.video_file}}<br/>
-      Created: {{ getVideo.created }} Last Update:{{ getVideo.updated }}<br/>
-      HLS: {{ getVideo.playback_hls }}
-    </p>
+  <script>
+    var player = document.getElementById("my-player");
+    var videoSrc = document.getElementById("video-src");
+    var playlist = document.getElementById("playlist");
+    var adBottom = document.getElementById("ad-bottom");
+    var adLeft = document.getElementById("ad-left");
 
-    <link href="//vjs.zencdn.net/7.8.2/video-js.min.css" rel="stylesheet">
-    <script src="//vjs.zencdn.net/7.8.2/video.min.js"></script>
-    <video
-    id="my-player"
-    class="video-js"
-    controls
-    preload="auto"
-    poster="//vjs.zencdn.net/v/oceans.png"
-    data-setup='{}'>
-    <source src="{{ getVideo.playback_hls }}" type="application/x-mpegURL"></source>
+    playlist.addEventListener("click", function(event) {
+      event.preventDefault();
+      if (event.target.tagName === "A") {
+        var thumbnailUrl = event.target.getAttribute("data-thumbnail");
+        var videoUrl = event.target.href;
+        videoSrc.src = videoUrl;
+        player.poster = thumbnailUrl;
+        player.load();
+        player.play().catch(function(error){
+            console.log(error)
+        });
+      }
+    });
 
-      <p class="vjs-no-js">
-        To view this video please enable JavaScript, and consider upgrading to a
-        web browser that
-        <a href="https://videojs.com/html5-video-support/" target="_blank">
-          supports HTML5 video
-        </a>
-      </p>
-    </video>
-  </div><!-- close card body -->
-</div><!-- close card shadom -->
+    // Load advertisement into ad overlay
+    function loadAd(ad, url) {
+      var img = new Image();
+      img.src = url;
+      ad.innerHTML = "";
+      ad.appendChild(img);
+    }
+  </script>
 
-  <form method="post" action="{% url 'go_live' %}">
-    {% csrf_token %}
-    <label>Video Stream: <input type="text" name="video_file" value="{{ getVideo.playback_hls }}"></label><br/>
-    <label>Platform Stream Key: <input type="text" name="stream_key" value="{{ getVideo.stream_key }}"></label><br/>
-    <label>Streaming platform: 
-      <select name="platform">
-        <option value="youtube">YouTube</option>
-        <option value="twitch">Twitch</option>
-      </select>
-    </label>
-    <input type="submit" value="Go Live">
-</form>
 
+
+
+
+
+
+<div>
+
+  <br/>
+  <br/>
+
+    <!-- DataTable -->
+    <div class="card shadow mb-4">
+      <div class="card-header py-3">
+        <h4>{{ getVideo.name }}</h4>
+      </div>
+      <div class="card-body">
+        <p>
+          ID: {{ getVideo.id }}<br/>
+          Description: {{getVideo.description}}<br/>
+          Owner: {{getVideo.owner}}<br/>
+          File: {{getVideo.video_file}}<br/>
+          Created: {{ getVideo.created }} Last Update:{{ getVideo.updated }}<br/>
+          HLS: {{ getVideo.playback_hls }}
+        </p>
+
+       
+      </div><!-- close card body -->
+    </div><!-- close card shadom -->
+
+      <form method="post" action="{% url 'go_live' %}">
+        {% csrf_token %}
+        <label>Video Stream: <input type="text" name="video_file" value="{{ getVideo.playback_hls }}"></label><br/>
+        <label>Platform Stream Key: <input type="text" name="stream_key" value="{{ getVideo.stream_key }}"></label><br/>
+        <label>Streaming platform: 
+          <select name="platform">
+            <option value="youtube">YouTube</option>
+            <option value="twitch">Twitch</option>
+          </select>
+        </label>
+        <input type="submit" value="Go Live">
+    </form>
+</div>
 
 {% endblock content %}

@@ -19,7 +19,7 @@ PROVIDER_NAME_CHOICES = (
 )
 
 class ShopProvider(models.Model):
-    name = models.CharField(blank=True, null=True, max_length=255, help_text="Name of Store", choices={PROVIDER_NAME_CHOICES})
+    name = models.CharField(blank=True, null=True, max_length=255, help_text="Name of Store", choices=PROVIDER_NAME_CHOICES)
     link = models.CharField(blank=True, null=True, max_length=255, help_text="Link to Store")
     api_key = models.CharField(blank=True, null=True, max_length=255, help_text="API key for store")
     api_password = models.CharField(blank=True, null=True, max_length=255, help_text="API Password for Auth")
@@ -52,9 +52,10 @@ class ShopProviderAdmin(admin.ModelAdmin):
 class Product(models.Model):
     name = models.CharField(blank=True, null=True, max_length=255, help_text="Name of Product")
     provider = models.ForeignKey(ShopProvider, blank=True, null=True, on_delete=models.CASCADE, help_text="Extneral or Internal Stream Host")
-    price = models.DecimalField(max_digits=10, decimal_places=2)
-    sku = models.CharField(max_length=255)
-    description = models.TextField()
+    price = models.DecimalField(max_digits=10, decimal_places=2, default="0.00")
+    sku = models.CharField(max_length=255, blank=True, null=True)
+    upc_code = models.CharField(max_length=5000, blank=True, null=True)
+    description = models.TextField(blank=True, null=True)
     link = models.CharField(blank=True, null=True, max_length=255, help_text="Link to Product")
     token = models.CharField(blank=True, null=True, max_length=255, help_text="Auth Token")
     created = models.DateTimeField(auto_now=False, blank=True, null=True)
@@ -83,7 +84,7 @@ class ProductAdmin(admin.ModelAdmin):
 class ProductImage(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='images')
     image_url = models.URLField()
-    alt = models.CharField(max_length=255, blank=True)
+    alt = models.CharField(max_length=255, blank=True, null=True)
 
     def __str__(self):
         return self.product.name

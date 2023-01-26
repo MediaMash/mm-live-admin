@@ -18,8 +18,8 @@
 <div class="card shadow mb-4">
   <div class="card-body">
     <div>
-      <a href="/shop/product_add/" class="btn btn-primary btn-sm">Add New Product</a> |
-      <a href="/shop/get_products/" class="btn btn-primary btn-sm">Import New Products From Provider</a> 
+      <a href="/shop/product_add/" class="btn btn-primary btn-sm">Add New Product</a>&nbsp;
+      <a href="/shop/get_products/" class="btn btn-secondary btn-sm">Import New Products From Provider</a> 
     </div>
     <br/>
     <div class="table-responsive">
@@ -27,9 +27,8 @@
         <thead>
           <tr>
             <th>Name</th>
-            <th>Description</th>
             <th>Link</th>
-            <th>Status</th>
+            <th>Thumbnail</th>
             <th>Date Added</th>
             <th>Date Last Edited</th>
             <th>&nbsp;</th>
@@ -39,9 +38,8 @@
           {% for item in getProducts %}
           <tr>
             <td><a href="/shop/product_update/{{ item.id }}">{{ item.name }}</a></td>
-            <td>{{item.description}}</td>
             <td>{{item.link}}</td>
-            <td>{{item.status}}</td>
+            <td>{% for image in item.images.all %}<img class="thumbnail" src="{{ image.image_url }}" width="50">{% endfor %}</td>
             <td>{{ item.created }}</td>
             <td>{{ item.updated }}</td>
             <td>

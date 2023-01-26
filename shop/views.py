@@ -16,7 +16,7 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView, View
 from django.views.generic.list import ListView
 
 from django.contrib.auth.models import User
-from .models import Product
+from .models import Product, ProductImage
 from .forms import ProductForm
 
 from .util import getProducts
@@ -34,8 +34,7 @@ class ProductList(ListView):
     template_name = 'shop/product_list.html'
 
     def get(self, request, *args, **kwargs):
-        get_user = User.objects.all().filter(username=request.user.username)
-        get_products = Product.objects.all()
+        get_products = Product.objects.prefetch_related('images').all()
 
         return render(request, self.template_name, {'getProducts': get_products})
 
@@ -87,7 +86,7 @@ class ProductUpdate(UpdateView):
     Product Form Update an existing Product
     """
     model = Product
-    template_name = 'shop/Product_form.html'
+    template_name = 'shop/product_form.html'
 
     def dispatch(self, request, *args, **kwargs):
         return super(ProductUpdate, self).dispatch(request, *args, **kwargs)

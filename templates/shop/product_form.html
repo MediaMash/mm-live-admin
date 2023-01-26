@@ -28,4 +28,11 @@
     {% load crispy_forms_tags %}
     {% crispy form %}
 
+    {% for image in product.images.all %}
+        <br/>    
+        <p>{{ image.alt }}
+            <img name="{{ image.alt }}" src="{{ image.image_url }}">
+        </p>
+    {% endfor %}
+
 {% endblock content %}
