@@ -12,108 +12,161 @@
 
 {% block content %}
 <link rel="stylesheet" href="{% static 'player/css/player.css' %}">
-  <div class="container-fluid">
-    <div class="row">
-      <div class="col-8">
-        <link href="//vjs.zencdn.net/7.8.2/video-js.min.css" rel="stylesheet">
-        <script src="//vjs.zencdn.net/7.8.2/video.min.js"></script>
-        <video
-        id="my-player"
-        class="video-js"
-        controls
-        preload="auto"
-        data-setup='{}'>
-        <source id="video-src" src="{{ getVideo.playback_hls }}" type="application/x-mpegURL"></source>
-      </div>
-      <div class="col-4">
-        <ul id="playlist">
-          {% for video in get_all_videos %}
-          <li><a href="{{ video.playback_hls }}" data-thumbnail="{{ video.playback_hls }}">{{ video.name }}</a></li>
-          {% endfor %}
-        </ul>
-      </div>
+<link href="https://unpkg.com/video.js@7/dist/video-js.min.css" rel="stylesheet">
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<div class="container-fluid">
+  <!-- DataTable -->
+  <div class="card shadow mb-4">
+    <div class="card-header py-3">
+      <h3>Video Player Example</h3>
     </div>
-    <div id="overlay-content" style="display: none;">
-      <p>{{ get_video_product.product.name }}
-        <img src="{{ get_video_product.product.image }}">
-        {{ get_video_product.product.link }}
-      </p>
+    <div class="card-body">
+      <div class="page-wrapper">
+      <div class="playlist-wrapper">
+        <div class="playlist-mother-video">
+          <video id="example_video_1" class="video-js vjs-theme-city"
+              controls="false"
+              preload="auto"
+              autoplay
+              muted preload="auto" width="800" height="450">
+          <source src="{{ getVideo.playback_hls }}" type="application/x-mpegURL">
+          </video>
+        </div>
+        <div class="playlist-products">
+        </div>
+      </div>
+      <div class="playlist-child-videos" id="plylst_upcming"></div>
+      </div>
+      <script src="https://vjs.zencdn.net/7.6.6/video.js?"></script>
     </div>
   </div>
-  <script>
-    var player = videojs("my-player");
-    var videoSrc = document.getElementById("video-src");
-    var playlist = document.getElementById("playlist");
-    var adBottom = document.getElementById("ad-bottom");
-    var adLeft = document.getElementById("ad-left");
+</div>     
+<script>
 
-    playlist.addEventListener("click", function(event) {
-      event.preventDefault();
-      if (event.target.tagName === "A") {
-        var thumbnailUrl = event.target.getAttribute("data-thumbnail");
-        var videoUrl = event.target.href;
-        player.pause()
-        videoSrc.setAttribute('src', videoUrl);
-        player.poster = thumbnailUrl;
-        player.load();
-        player.play();
-      }
-    });
-
-    var video = document.getElementById("my-video");
-    var overlayContent = document.getElementById("overlay-content");
-
-    video.addEventListener("timeupdate", function() {
-      if (this.currentTime >= 30 && this.currentTime < 45) {
-        overlayContent.style.display = "block";
-      } else {
-        overlayContent.style.display = "none";
-      }
-    });
-  </script>
+var player = videojs("example_video_1");
+var upcoming_list = $("#plylst_upcming");
+var last_video_index = 0;
 
 
+var playlist = [
+  {
+    url: "{{ getVideo.playback_hls }}",
+    thumbnail: "{% static 'player/images/no_thumb.jpeg' %}",
+    isLive: true,
+    title: "{{ getVideo.name }}",
+    linkedProducts: ["{% for product in get_video_products.all %} {{ product }} {% endfor%}"],
+    length: "",
+    playing: true
+  },
+  {
+    url: "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4",
+    thumbnail: "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/images/ElephantsDream.jpg",
+    isLive: false,
+    linkedProducts: [],
+    title: "Elephants Dream",
+    length: "10:53",
+    playing: false
+  },
+  {
+    url: "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4",
+    thumbnail: "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/images/ForBiggerBlazes.jpg",
+    isLive: false,
+    linkedProducts: [],
+    title: "Chromecast – For Bigger Blazes",
+    length: "10:53",
+    playing: false
+  },
+  {
+    url: "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4",
+    thumbnail: "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/images/ForBiggerEscapes.jpg",
+    isLive: false,
+    linkedProducts: [],
+    title: "Chromecast – For Bigger Escapes",
+    length: "10:53",
+    playing: false
+  },
+  {
+    url: "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/Sintel.mp4",
+    thumbnail: "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/images/Sintel.jpg",
+    isLive: false,
+    linkedProducts: [],
+    title: "Sintel",
+    length: "10:53",
+    playing: false
+  }
+];
+player.dimension("width", 1280);
+player.dimension("height", 720);
+
+function build_list_item (s) {
+  var isLive = s.isLive.toString();
+  var length = s.isLive ? "Live":s.length;
+  var playing = s.playing.toString();
+  var e = $(`<div class="playlist-item-wrapper" data-playing="${playing}" data-live="${isLive}">
+<div class="playlist-thumb">
+<img src="${s.thumbnail}"/>
+<div class="playlist-meta-length"><span>${length}</span></div>
+</div>
+<div class="playlist-meta">
+<div class="playlist-meta-title">${s.title}</div>
+</div>
+</div>`);
+  e.click(i => {
+    player.src(s.url);
+    playlist[last_video_index].playing = false;
+    last_video_index = playlist.indexOf(s);
+    playlist[last_video_index].playing = true;
+    populate_playlist();
+  });
+  return e;
+}
+function populate_list (data, elem) {
+  elem.html("");
+  for (var item of data) {
+    elem.append(build_list_item(item));
+  }
+}
+function populate_playlist () {
+  populate_list(playlist, $("#plylst_upcming"));
+}
+populate_playlist();
+</script>
 
 
 
 
+<div class="container">
+  <!-- DataTable -->
+  <div class="card shadow mb-4">
+    <div class="card-header py-3">
+      <h4>{{ getVideo.name }}</h4>
+    </div>
+    <div class="card-body">
+      <p>
+        ID: {{ getVideo.id }}<br/>
+        Description: {{getVideo.description}}<br/>
+        Owner: {{getVideo.owner}}<br/>
+        File: {{getVideo.video_file}}<br/>
+        Created: {{ getVideo.created }} Last Update:{{ getVideo.updated }}<br/>
+        HLS: {{ getVideo.playback_hls }}
+      </p>
 
-<div>
+      
+    </div><!-- close card body -->
+  </div><!-- close card shadom -->
 
-  <br/>
-  <br/>
-
-    <!-- DataTable -->
-    <div class="card shadow mb-4">
-      <div class="card-header py-3">
-        <h4>{{ getVideo.name }}</h4>
-      </div>
-      <div class="card-body">
-        <p>
-          ID: {{ getVideo.id }}<br/>
-          Description: {{getVideo.description}}<br/>
-          Owner: {{getVideo.owner}}<br/>
-          File: {{getVideo.video_file}}<br/>
-          Created: {{ getVideo.created }} Last Update:{{ getVideo.updated }}<br/>
-          HLS: {{ getVideo.playback_hls }}
-        </p>
-
-       
-      </div><!-- close card body -->
-    </div><!-- close card shadom -->
-
-      <form method="post" action="{% url 'go_live' %}">
-        {% csrf_token %}
-        <label>Video Stream: <input type="text" name="video_file" value="{{ getVideo.playback_hls }}"></label><br/>
-        <label>Platform Stream Key: <input type="text" name="stream_key" value="{{ getVideo.stream_key }}"></label><br/>
-        <label>Streaming platform: 
-          <select name="platform">
-            <option value="youtube">YouTube</option>
-            <option value="twitch">Twitch</option>
-          </select>
-        </label>
-        <input type="submit" value="Go Live">
-    </form>
+  <form method="post" action="{% url 'go_live' %}">
+    {% csrf_token %}
+    <label>Video Stream: <input type="text" name="video_file" value="{{ getVideo.playback_hls }}"></label><br/>
+    <label>Platform Stream Key: <input type="text" name="stream_key" value="{{ getVideo.stream_key }}"></label><br/>
+    <label>Streaming platform: 
+      <select name="platform">
+        <option value="youtube">YouTube</option>
+        <option value="twitch">Twitch</option>
+      </select>
+    </label>
+    <input type="submit" value="Go Live">
+  </form>
 </div>
 
 {% endblock content %}
