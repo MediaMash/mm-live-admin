@@ -2,8 +2,10 @@ import requests
 import json
 from tusclient import client
 from django.conf import settings
-from video.models import Provider 
+from video.models import Provider, Video
 from django.shortcuts import render, redirect
+from django.conf import settings
+
 
 # Get an instance of a logger
 import logging
@@ -77,18 +79,34 @@ from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 from googleapiclient.http import MediaFileUpload
 
-def upload_video_post(request):
+def upload_video_post(file):
+
+    get_video = Video.objects.get(pk=file)
+
+    from google.oauth2.service_account import Credentials
+
+    # Build the credentials object using the service account key JSON file
+    creds = Credentials.from_service_account_file(settings.GOOGLE_APPLICATION_CREDENTIALS)
+
     try:
-        # Build the service object
-        youtube = build('youtube', 'v3', developerKey=account_key)
+        # Build the YouTube API client
+        youtube = build("youtube", "v3", credentials=creds)
+
+        # Get the path to a file uploaded to the media directory
+        file_path = get_video.video_file.path
 
         # Get the video file and meta data
-        video_file = request.FILES['video_file']
-        video_name = request.POST.get('video_name')
-        video_description = request.POST.get('video_description')
+        video_file = file_path
+        video_name = get_video.name
+        video_description = get_video.description
+
+        import os
+
+        if not os.path.exists(video_file):
+            print("The file does not exist at the specified path: {}".format(video_file))
 
         # Create the MediaFileUpload object
-        media = MediaFileUpload(video_file, mimetype='video/*')
+        media = MediaFileUpload(video_file, chunksize=1024*1024, resumable=True)
 
         # Create the video
         video = youtube.videos().insert(
@@ -108,5 +126,5 @@ def upload_video_post(request):
         return redirect(f'https://www.youtube.com/watch?v={video["id"]}')
     except HttpError as error:
         print(f'An error occurred: {error}')
-        return render(request, '500.html', {'error': 'Invalid platform'})
+        return render('500.html', {'error': 'Invalid platform'})
 

@@ -1,11 +1,20 @@
-from django.urls import path, re_path
+from django.urls import path, re_path, include
 from django.conf.urls import url
 from django.conf.urls import include
-from .views import VideoList, VideoUpdate, VideoCreate, VideoDelete, VideoView, VideoPlayer
+from .views import VideoList, VideoUpdate, VideoCreate, VideoDelete, VideoView, VideoPlayer, VideoPlayer2, publish_youtube, publish_vimeo, VideoViewSet
 from .stream_views import LiveStreamList, LiveStreamUpdate, LiveStreamCreate, LiveStreamDelete, LiveStreamView, LiveStreamPlayer
 from . import stream_views
 
+from rest_framework.routers import DefaultRouter
+
+router = DefaultRouter()
+router.register(r'videos', VideoViewSet, basename='video')
+
+
 urlpatterns = [
+
+    #rest service
+    path('api/', include(router.urls)),
 
     # Video
     re_path(r'^$', VideoList.as_view(), name='video_list'),
@@ -14,7 +23,10 @@ urlpatterns = [
     re_path(r'^video_update/(?P<pk>\w+)/$', VideoUpdate.as_view(), name='video_update'),
     re_path(r'^video_view/(?P<pk>\w+)/$', VideoView.as_view(), name='video_view'),
     re_path(r'^video_player/$', VideoPlayer.as_view(), name='player_view'),
+    re_path(r'^video_player2/$', VideoPlayer2.as_view(), name='player_view2'),
     re_path(r'^video_delete/(?P<pk>\w+)/$', VideoDelete.as_view(), name='video_delete'),
+    re_path(r'^publish_youtube/(?P<pk>\w+)/$', publish_youtube, name='publish_youtube'),
+    re_path(r'^publish_vimeo/(?P<pk>\w+)/$', publish_vimeo, name='publish_vimeo'),
     # platform stream
     url(r'^go_live/$', stream_views.go_live, name='go_live'),
     # LiveStream

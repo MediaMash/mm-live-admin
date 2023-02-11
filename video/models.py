@@ -19,13 +19,16 @@ PROVIDER_NAME_CHOICES = (
     ("Facebook", "Facebook"),
     ("Internal Premium", "Amazon"),
     ("Internal", "CloudFlare"),
+    ("TikTok", "TikTok"),
 )
+
 
 class Provider(models.Model):
     name = models.CharField(choices=PROVIDER_NAME_CHOICES, blank=True, null=True, max_length=255, help_text="Name of Streaming Provider (YouTube, Twitch etc.)")
     link = models.CharField(blank=True, null=True, max_length=255, help_text="Link to Video Source")
     token = models.CharField(blank=True, null=True, max_length=255, help_text="Auth Token")
-    account_key = models.CharField(blank=True, null=True, max_length=255, help_text="Account Key or ID")
+    account_key = models.CharField(blank=True, null=True, max_length=255, help_text="Account Key or ID, or API KEY")
+    account_secret = models.CharField(blank=True, null=True, max_length=255, help_text="Account Secret, or API Secret")
     auth_email = models.CharField(blank=True, null=True, max_length=255, help_text="Authorized email of account admin")
     stream_key = models.CharField(blank=True, null=True, max_length=255, help_text="Unique key for streaming")
     stream_user_name = models.CharField(blank=True, null=True, max_length=255, help_text="Authorized username from stream account")
@@ -101,6 +104,7 @@ class Video(models.Model):
     stream_url = models.CharField(blank=True, null=True, max_length=255, help_text="Streaming Provider URL")
     playback_hls = models.CharField(blank=True, null=True, max_length=255, help_text="Streaming Provider URL for HLS stream")
     playback_dash = models.CharField(blank=True, null=True, max_length=255, help_text="Streaming Provider URL for DASH stream")
+    related_products = models.ManyToManyField(Product, related_name='videos')
     is_live = models.BooleanField(default=False)
     created = models.DateTimeField(auto_now=False, blank=True, null=True)
     updated = models.DateTimeField(auto_now=False, blank=True, null=True)
@@ -153,8 +157,8 @@ class VideoAdmin(admin.ModelAdmin):
 class VideoProduct(models.Model):
     video = models.ForeignKey(Video, blank=True, null=True, on_delete=models.CASCADE, help_text="Video")
     product = models.ForeignKey(Product, blank=True, null=True, on_delete=models.CASCADE, help_text="Product to link to Video", related_name="video_products")
-    run_time_minutes = models.CharField(blank=True, null=True, max_length=255, help_text="When to display product in Video Minutes")
-    run_time_seconds = models.CharField(blank=True, null=True, max_length=255, help_text="When to display product in Video Seconds")
+    show_timestamp = models.CharField(blank=True, null=True, max_length=255, help_text="When to display product in Video Minutes")
+    hide_timestamp = models.CharField(blank=True, null=True, max_length=255, help_text="When to hide the product in Video Seconds")
 
 class VideoProductAdmin(admin.ModelAdmin):
     display = 'Video Products'

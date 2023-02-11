@@ -18,6 +18,8 @@ from .models import Video, VideoProduct
 from .forms import VideoForm
 from .util import get_details
 
+from .youtube import upload_video_post
+
 from django.contrib.auth.models import User
 
 @method_decorator(login_required, name='dispatch')
@@ -63,6 +65,19 @@ class VideoPlayer(View):
     """
     model = Video
     template_name = 'player_example.html'
+
+    def get(self, request, *args, **kwargs):
+        get_videos = Video.objects.all()
+        return render(request, self.template_name, {'getVideos': get_videos})
+
+
+@method_decorator(login_required, name='dispatch')
+class VideoPlayer2(View):
+    """
+    Video Detail View
+    """
+    model = Video
+    template_name = 'player_example2.html'
 
     def get(self, request, *args, **kwargs):
         get_videos = Video.objects.all()
@@ -129,6 +144,7 @@ class VideoUpdate(UpdateView):
 
         initial = {
             'user': self.request.user,
+            'pk': self.request.GET.get('id', None),            
         }
 
         return initial
@@ -192,3 +208,22 @@ def logout_view(request):
 def check_view(request):
     return HttpResponse("Hostname "+request.get_host())
 
+
+from django.shortcuts import render, redirect
+
+def publish_youtube(request, pk):
+    upload_video_post(pk)
+    return HttpResponseRedirect("/video_list")
+
+def publish_vimeo(request, pk):
+    upload_video_post(pk)
+    return HttpResponseRedirect("/video_list")
+
+
+from rest_framework import viewsets
+from .models import Video
+from .serializer import VideoSerializer
+
+class VideoViewSet(viewsets.ModelViewSet):
+    queryset = Video.objects.all()
+    serializer_class = VideoSerializer

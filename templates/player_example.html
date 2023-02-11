@@ -1,52 +1,78 @@
 {% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
 
+<meta charset="UTF-8">
+<title>Carousel with Videos and Ads from REST API</title>
 <head>
-<meta charset=utf-8 />
-<title>videojs-contrib-hls embed</title>
+<!-- Load Bootstrap CSS -->
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 
-
-  <!--
-
-  Uses the latest versions of video.js and videojs-http-streaming.
-
-  To use specific versions, please change the URLs to the form:-->
-
-  <link href="https://unpkg.com/video.js@7.8.4/dist/video-js.css" rel="stylesheet">
-  <script src="https://unpkg.com/video.js@7.8.4/dist/video.js"></script>
-  <script src="https://unpkg.com/@videojs/http-streaming@1.13.4/dist/videojs-http-streaming.js"></script>
-
+<link rel="stylesheet" href="{% static 'player/css/player.css' %}">
+<link href="//vjs.zencdn.net/7.10.2/video-js.min.css" rel="stylesheet">
+<script src="//vjs.zencdn.net/7.10.2/video.min.js"></script>
 
 </head>
 <body>
-  <h1>Video.js Example Embed</h1>
 
-  <video-js id="my_video_1" class="vjs-default-skin" controls preload="auto" width="640" height="268">
-    <!--
-    <source src="https://d2zihajmogu5jn.cloudfront.net/bipbop-advanced/bipbop_16x9_variant.m3u8" type="application/x-mpegURL">
-    -->
-    <source src="https://videodelivery.net/d70605bd3cb06bea1fe1b30bd1b6e9fc/manifest/video.m3u8"  type="application/x-mpegURL">
-  </video-js>
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 
-  <script>
-    var player = videojs('my_video_1');
-  </script>
-
-  <h1>Video.js Example LiveStream</h1>
-
-  <video-js id="my_video_2" class="vjs-default-skin" controls preload="auto" width="640" height="268">
-    <!--
-    <source src="https://d2zihajmogu5jn.cloudfront.net/bipbop-advanced/bipbop_16x9_variant.m3u8" type="application/x-mpegURL">
-    -->
-    <source src="https://d1hc86r5zc9wxl.cloudfront.net/out/v1/e7c2fd6ac27c42a085a73de0e6dc660d/index.m3u8" type="application/x-mpegURL">
-  </video-js>
-
+<a href="/video/video_list/" class="btn btn-primary btn-sm">Back to Admin</a>
+<a href="/video/video_player/" class="btn btn-primary btn-sm">Preview Video Player 1</a>
+  <div class="container-fluid">
+    <div id="video-carousel" class="carousel slide" data-ride="carousel">
+      <div class="carousel-inner">
+      </div>
+      <a class="carousel-control-prev" href="#video-carousel" role="button" data-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="sr-only">Previous</span>
+      </a>
+      <a class="carousel-control-next" href="#video-carousel" role="button" data-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="sr-only">Next</span>
+      </a>
+    </div>
+  </div>
 
   <script>
-    var player = videojs('my_video_2');
+    $(document).ready(function() {
+      // Load videos and ads from REST API endpoint
+      var url='http://127.0.0.1:8000/video/api/videos/?format=json'
+      $.getJSON(url, function(data) {
+        $.each(data, function(index, item) {
+          // create a new carousel item for each video
+          var itemHtml = '<div class="carousel-item"><video width="80%" class="video-js vjs-default-skin vjs-big-play-centered" controls="false" autoplay muted></video><div class="carousel-caption"><h5>' + item.name + '</h5></div></div>';
+          $('.carousel-inner').append(itemHtml);
+
+          // create a new nested carousel for the ads
+          var adHtml = '<div class="carousel-item active"><div class="d-flex">';
+          $.each(item.related_products, function(index, ad) {
+            adHtml += '<div class="p-2"><a href="' + ad.url + '">' + ad.name + '<br/><img src="' + ad.images.image_url + '"></a></div>';
+          });
+          adHtml += '</div></div>';
+          $('.carousel-ads').append(adHtml);
+
+          // initialize the video player for each video
+          var video = videojs($('.carousel-item').last().find('video').get(0), {fluid: true});
+
+          console.log(item.playback_hls);
+          video.src({
+            src: item.playback_hls,
+            type: 'application/x-mpegURL'
+          });
+          video.load();
+          video.play();
+        });
+
+        // activate the first carousel item and nested carousel
+        $('.carousel-item').first().addClass('active');
+        $('.carousel-ads').first().addClass('active');
+      });
+    });
   </script>
-
-
 </body>
-</html>
+</html> 
+
+  

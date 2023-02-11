@@ -19,6 +19,8 @@
   <div class="card-body">
     <div>
       <a href="/video/video_add/" class="btn btn-primary btn-sm">Add New Video</a>
+      <a href="/video/video_player/" class="btn btn-primary btn-sm">Preview Video Player</a>
+
     </div>
     <br/>
     <div class="table-responsive">
@@ -33,7 +35,7 @@
             <th>Status</th>
             <th>Date Added</th>
             <th>Date Last Edited</th>
-            <th>&nbsp;</th>
+            <th colspan="2">&nbsp;</th>
           </tr>
         </thead>
         <tbody>
@@ -52,6 +54,12 @@
                   <a href="/video/video_view/{{ item.id }}" class="btn btn-primary btn-sm">View</a>
                   <a href="/video/video_update/{{ item.id }}"  class="btn btn-secondary btn-sm">Edit</a>
                   <a href="/video/video_delete/{{ item.id }}/" class="btn btn-warning btn-sm"> Delete</a>
+              </div>
+            </td>
+            <td>
+              <div class="btn-group" role="group" aria-label="Basic example">
+                  <a href="/video/publish_youtube/{{ item.id }}" class="btn btn-primary btn-sm">YouTube</a>
+                  <a href="/video/publish_vimeo/{{ item.id }}"  class="btn btn-secondary btn-sm">Vimeo</a>
               </div>
             </td>
           </tr>

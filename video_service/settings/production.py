@@ -51,3 +51,7 @@ ALLOWED_HOSTS = ['mm-live-admin-w3awf.ondigitalocean.app', 'nullrecords.com', '1
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+
+SECRET_KEY = "123sdf45d2f234ggsdfg5gfewrvdfj345gfds9jdfg999fer"
+
+GOOGLE_APPLICATION_CREDENTIALS = os.environ.get("GOOGLE_APPLICATION_CREDENTIALS") 

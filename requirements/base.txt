@@ -47,3 +47,6 @@ xlwt==1.3.0
 ShopifyAPI
 google-api-python-client
 ffmpeg-python
+moviepy
+facebook-sdk
+djangorestframework

@@ -1,0 +1,167 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset=utf-8 />
+<title>Example Video Player</title>
+<!-- Load Bootstrap CSS -->
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <!--
+
+  Uses the latest versions of video.js and videojs-http-streaming.
+
+  To use specific versions, please change the URLs to the form:-->
+
+  <link href="https://unpkg.com/video.js@7.8.4/dist/video-js.css" rel="stylesheet">
+  <script src="https://unpkg.com/video.js@7.8.4/dist/video.js"></script>
+  <script src="https://unpkg.com/@videojs/http-streaming@1.13.4/dist/videojs-http-streaming.js"></script>
+
+</head>
+<body>
+
+  <link rel="stylesheet" href="{% static 'player/css/player.css' %}">
+  <link href="https://unpkg.com/video.js@7/dist/video-js.min.css" rel="stylesheet">
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+  <a href="/video/video_list/" class="btn btn-primary btn-sm">Back</a>
+  <a href="/video/video_player2/" class="btn btn-primary btn-sm">Preview Video Player 2</a>
+  <div class="container-fluid">
+    <!-- DataTable -->
+    <div class="card shadow mb-4">
+      <div class="card-header py-3">
+        <h3>
+          Your Logo and Brand Colors Here
+        </h3>
+      </div>
+      <div class="card-body">
+        <div class="page-wrapper">
+        <div class="playlist-wrapper">
+          <div class="playlist-mother-video">
+            <video id="example_video_1" class="video-js vjs-theme-city"
+                controls="false"
+                preload="auto"
+                autoplay
+                muted preload="auto" width="800" height="450">
+            <source src="" type="application/x-mpegURL">
+            </video>
+          </div>
+          <div class="playlist-products">
+            <div class="product-list">
+                <h4>Related Products</h4>
+                {% for x in get_video_products %}
+                    <div class="card-body">
+                      <div class="productlist-thumb">
+                        <a href="">
+                        <img src=""/>
+                        <div class="productlist-meta"><span>{{ x.product.name }}</span></div>
+                      </a>
+                      </div>
+                    </div>
+                {% endfor %}
+            </div>
+          </div>
+        </div>
+        <div class="playlist-child-videos" id="plylst_upcming"></div>
+        </div>
+        <script src="https://vjs.zencdn.net/7.6.6/video.js?"></script>
+      </div>
+    </div>
+  </div>     
+  <script>
+
+
+  
+  var player = videojs("example_video_1");
+  var upcoming_list = $("#plylst_upcming");
+  var last_video_index = 0;
+  
+  var playlist = [];
+
+  async function getVideos() {
+    
+    try {
+      const response = await fetch('http://127.0.0.1:8000/video/api/videos/?format=json');
+      const data = await response.json();
+
+      playlist = data.map(video => ({
+        title: video.name,
+        url: video.playback_hls,
+        isLive: false,
+        linkedProducts: [video.related_products],
+        length: "10:53",
+        playing: false
+      }));
+      
+      console.log(playlist);
+
+    } catch (error) {
+      console.error(error);
+    }
+    return playlist;
+  }
+  
+
+playlist = getVideos()
+
+  if (playlist.length === 0) {
+    console.log('The array is empty');
+    playlist = [
+      {
+        url: "https://customer-oea4zxza4u5hx1zy.cloudflarestream.com/41ffa931d7bb77039dd6c622edcc16a0/manifest/video.m3u8",
+        thumbnail: "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/images/ElephantsDream.jpg",
+        isLive: false,
+        linkedProducts: [],
+        title: "Elephants Dream",
+        length: "10:53",
+        playing: false
+      },
+      
+    ];
+  } else {
+    console.log('The array is not empty');
+    console.log(playlist);
+  }
+
+
+  player.dimension("width", 1280);
+  player.dimension("height", 720);
+  
+  function build_list_item (s) {
+    var isLive = s.isLive.toString();
+    var length = s.isLive ? "Live":s.length;
+    var playing = s.playing.toString();
+    var e = $(`<div class="playlist-item-wrapper" data-playing="${playing}" data-live="${isLive}">
+  <div class="playlist-thumb">
+  <img src="${s.thumbnail}"/>
+  <div class="playlist-meta-length"><span>${length}</span></div>
+  </div>
+  <div class="playlist-meta">
+  <div class="playlist-meta-title">${s.title}</div>
+  </div>
+  </div>`);
+    e.click(i => {
+      player.src(s.url);
+      playlist[last_video_index].playing = false;
+      last_video_index = playlist.indexOf(s);
+      playlist[last_video_index].playing = true;
+      populate_playlist();
+    });
+    return e;
+  }
+  function populate_list (data, elem) {
+    elem.html("");
+    for (var item of data) {
+      elem.append(build_list_item(item));
+    }
+  }
+  function populate_playlist () {
+    populate_list(playlist, $("#plylst_upcming"));
+  }
+  populate_playlist();
+  </script>
+  
+ </body>
+ </html> 
+  
+
+ 

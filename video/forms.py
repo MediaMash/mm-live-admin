@@ -69,7 +69,7 @@ class VideoForm(forms.ModelForm):
     class Meta:
         model = Video
         fields = ['name', 'description', 'owner', 'link', 'video_file','run_time_minutes',
-        'run_time_seconds', 'direct_provider','external_provider','is_live']
+        'run_time_seconds', 'direct_provider','external_provider','is_live', 'related_products']
 
     def __init__(self, *args, **kwargs):
         request = kwargs.pop('request')
@@ -91,7 +91,11 @@ class VideoForm(forms.ModelForm):
                 'name', 'description', 'owner', 'video_file',Field('is_live', disabled=True),
                 ),
             ),
-        ),
+            Tab('Products',
+             Fieldset('',
+                'related_products', ),
+                ),
+            ),
 
         HTML("""<br/>"""),
 
