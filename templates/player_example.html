@@ -39,7 +39,7 @@
   <script>
     $(document).ready(function() {
       // Load videos and ads from REST API endpoint
-      var url='http://127.0.0.1:8000/video/api/videos/?format=json'
+      var url='https://mm-live-admin-w3awf.ondigitalocean.app/video/api/videos/?format=json'
       $.getJSON(url, function(data) {
         $.each(data, function(index, item) {
           // create a new carousel item for each video
