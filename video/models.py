@@ -28,7 +28,6 @@ class Provider(models.Model):
     link = models.CharField(blank=True, null=True, max_length=255, help_text="Link to Video Source")
     token = models.CharField(blank=True, null=True, max_length=255, help_text="Auth Token")
     account_key = models.CharField(blank=True, null=True, max_length=255, help_text="Account Key or ID, or API KEY")
-    account_secret = models.CharField(blank=True, null=True, max_length=255, help_text="Account Secret, or API Secret")
     auth_email = models.CharField(blank=True, null=True, max_length=255, help_text="Authorized email of account admin")
     stream_key = models.CharField(blank=True, null=True, max_length=255, help_text="Unique key for streaming")
     stream_user_name = models.CharField(blank=True, null=True, max_length=255, help_text="Authorized username from stream account")
