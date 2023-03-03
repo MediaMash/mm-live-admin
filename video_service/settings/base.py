@@ -44,6 +44,7 @@ INSTALLED_APPS_THIRD_PARTIES = [
     'rest_framework.authtoken',
     'django_filters',
     'crispy_forms',
+    'crispy_bootstrap5',
     'material',
     'storages',
     'django_social_share',

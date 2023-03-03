@@ -11,7 +11,7 @@ botocore==1.29.49
 certifi==2022.12.7
 charset-normalizer==3.0.1
 Django==3.2.16
-django-crispy-forms==1.14.0
+django-crispy-forms
 django-el-pagination==3.3.0
 django-filter==21.1
 django-modelcluster==6.0
@@ -50,3 +50,4 @@ ffmpeg-python
 moviepy
 facebook-sdk
 djangorestframework
+crispy-bootstrap5
