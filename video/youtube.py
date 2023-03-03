@@ -11,41 +11,7 @@ from django.conf import settings
 import logging
 logger = logging.getLogger(__name__)
 
-"""
-Set account variables for youtube api access
-"""
-youtube = Provider.objects.filter(name="YouTube").first()
-if youtube:
-    api_url = youtube.api_url
-    account_key = youtube.account_key
-else:
-    api_url = settings.YOUTUBE_API_URL
-    account_key = settings.YOUTUBE_API_KEY
-def upload_video(file, path):
-    # Set Authorization headers if it is required
-    # by the tus server.
-    """
-    curl --request POST \
-      'https://www.googleapis.com/youtube/v3/videos?key=[YOUR_API_KEY]' \
-      --header 'Authorization: Bearer [YOUR_ACCESS_TOKEN]' \
-      --header 'Accept: application/json' \
-      --header 'Content-Type: application/json' \
-      --data '{}' \
-      --compressed
 
-    Formats:
-    MP4, MKV, MOV, AVI, FLV, MPEG-2 TS, MPEG-2 PS, MXF, LXF, GXF, 3GP, WebM, MPG, QuickTime
-    """
-    my_client = client.TusClient(url=api_url  + 'account_key',
-                                  headers={'Authorization: Bearer ' + token})
-    logger.warning("URL:" + str(my_client.url))
-    uploader = my_client.uploader(file_path=path, chunk_size=5 * 1024 * 1024, metadata={'name': file,})
-    uploader.upload()
-    logger.warning("STATUS:" + str(uploader) + "-" + str(uploader.url))
-    if uploader.url:
-        return str(uploader.url)
-    else:
-        return "ERROR"
 
 def get_video():
     """
