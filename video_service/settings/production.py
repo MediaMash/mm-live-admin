@@ -32,11 +32,11 @@ EMAIL_HOST_PASSWORD = os.environ.get("SENDGRID_PASSWORD")  # new
 EMAIL_PORT = 587  # new
 EMAIL_USE_TLS = True  # new
 
-AWS_STORAGE_BUCKET_NAME = 'bc-store'
+AWS_STORAGE_BUCKET_NAME = 'blue-shop'
 AWS_ACCESS_KEY_ID = 'DO00MW9V6QPPJKVCGHYA'
 AWS_SECRET_ACCESS_KEY = os.environ.get("SPACES_SECRET")
-AWS_S3_CUSTOM_DOMAIN = 'cms-static.nyc3.digitaloceanspaces.com' + "/" + AWS_STORAGE_BUCKET_NAME
-AWS_S3_ENDPOINT_URL  = 'https://cms-static.nyc3.digitaloceanspaces.com'
+AWS_S3_CUSTOM_DOMAIN = 'blue-shop.nyc3.digitaloceanspaces.com' + "/" + AWS_STORAGE_BUCKET_NAME
+AWS_S3_ENDPOINT_URL  = 'https://blue-shop.nyc3.digitaloceanspaces.com'
 
 MEDIA_URL = AWS_S3_CUSTOM_DOMAIN + "/" + AWS_STORAGE_BUCKET_NAME + "/"
 DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
@@ -47,7 +47,7 @@ STATICFILES_STORAGE = 'storages.backends.s3boto3.S3StaticStorage'
 
 AWS_DEFAULT_ACL = 'public-read'
 
-ALLOWED_HOSTS = ['mm-live-admin-w3awf.ondigitalocean.app', 'nullrecords.com', '127.0.0.1', '[::1]','video.nullrecords.com',]
+ALLOWED_HOSTS = [os.environ.get("ALLOWED_HOSTS")]
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
