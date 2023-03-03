@@ -33,7 +33,7 @@ EMAIL_PORT = 587  # new
 EMAIL_USE_TLS = True  # new
 
 AWS_STORAGE_BUCKET_NAME = 'blue-shop'
-AWS_ACCESS_KEY_ID = 'DO00MW9V6QPPJKVCGHYA'
+AWS_ACCESS_KEY_ID = 'DO008NMYH26WBDFEQNJ3'
 AWS_SECRET_ACCESS_KEY = os.environ.get("SPACES_SECRET")
 AWS_S3_CUSTOM_DOMAIN = 'blue-shop.nyc3.digitaloceanspaces.com' + "/" + AWS_STORAGE_BUCKET_NAME
 AWS_S3_ENDPOINT_URL  = 'https://blue-shop.nyc3.digitaloceanspaces.com'
