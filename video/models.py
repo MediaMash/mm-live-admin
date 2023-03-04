@@ -103,7 +103,7 @@ class Video(models.Model):
     stream_url = models.CharField(blank=True, null=True, max_length=255, help_text="Streaming Provider URL")
     playback_hls = models.CharField(blank=True, null=True, max_length=255, help_text="Streaming Provider URL for HLS stream")
     playback_dash = models.CharField(blank=True, null=True, max_length=255, help_text="Streaming Provider URL for DASH stream")
-    related_products = models.ManyToManyField(Product, related_name='videos')
+    related_products = models.ManyToManyField(Product, related_name='videos',blank=True, null=True)
     is_live = models.BooleanField(default=False)
     created = models.DateTimeField(auto_now=False, blank=True, null=True)
     updated = models.DateTimeField(auto_now=False, blank=True, null=True)

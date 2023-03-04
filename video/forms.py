@@ -88,7 +88,7 @@ class VideoForm(forms.ModelForm):
         TabHolder(
             Tab('Video Details',
              Fieldset('',
-                'name', 'description', 'owner', 'video_file',Field('is_live', disabled=True),
+                'name', 'description', 'owner', 'video_file',Field('is_live', disabled=True),'related_products',
                 ),
             ),
         ),
