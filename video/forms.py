@@ -98,9 +98,11 @@ class VideoForm(forms.ModelForm):
             ),
 
         HTML("""<br/>"""),
-
-        Submit('submit', 'Submit', css_class='btn-default'),
-        Reset('reset', 'Reset', css_class='btn-warning'))
+        FormActions(
+                        Submit('submit', 'Save', css_class='btn-default'),
+                        Reset('reset', 'Reset', css_class='btn-warning')
+                    )
+    )
 
 
 class LiveStreamForm(forms.ModelForm):
