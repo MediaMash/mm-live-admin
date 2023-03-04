@@ -120,8 +120,8 @@ class Video(models.Model):
         self.updated = timezone.now()
         super(Video, self).save()
         if self.video_file is not None and self.is_live is False:
-            logger.warning("Upload: " + self.video_file.name)
-            logger.warning("Upload Path: " + self.video_file.path)
+            logger.warning("Upload: " + str(self.video_file.name))
+            logger.warning("Upload Path: " + str(self.video_file.path))
             stream = upload_video(file=str(self.video_file.name), path=str(self.video_file.path))
             if stream == "ERROR":
                 logger.warning("Upload Failed: " + stream)
