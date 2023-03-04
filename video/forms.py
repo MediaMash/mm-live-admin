@@ -91,17 +91,12 @@ class VideoForm(forms.ModelForm):
                 'name', 'description', 'owner', 'video_file',Field('is_live', disabled=True),
                 ),
             ),
-            Tab('Products',
-             Fieldset('',
-                'related_products', ),
-                ),
-            ),
-
+        ),
         HTML("""<br/>"""),
         FormActions(
-                        Submit('submit', 'Save', css_class='btn-default'),
-                        Reset('reset', 'Reset', css_class='btn-warning')
-                    )
+            Submit('submit', 'Save', css_class='btn-default'),
+            Reset('reset', 'Reset', css_class='btn-warning')
+        )
     )
 
 
@@ -138,6 +133,8 @@ class LiveStreamForm(forms.ModelForm):
         ),
 
         HTML("""<br/>"""),
-
-        Submit('submit', 'Submit', css_class='btn-default'),
-        Reset('reset', 'Reset', css_class='btn-warning'))
+        FormActions(
+            Submit('submit', 'Save', css_class='btn-default'),
+            Reset('reset', 'Reset', css_class='btn-warning')
+        )
+    )
