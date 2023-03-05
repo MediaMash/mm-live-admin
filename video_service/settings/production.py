@@ -32,11 +32,11 @@ EMAIL_HOST_PASSWORD = os.environ.get("SENDGRID_PASSWORD")  # new
 EMAIL_PORT = 587  # new
 EMAIL_USE_TLS = True  # new
 
-AWS_STORAGE_BUCKET_NAME = 'blue-shop'
+AWS_STORAGE_BUCKET_NAME = os.environ.get("AWS_STORAGE_BUCKET_NAME")
 AWS_ACCESS_KEY_ID = 'DO008NMYH26WBDFEQNJ3'
 AWS_SECRET_ACCESS_KEY = os.environ.get("SPACES_SECRET")
-AWS_S3_CUSTOM_DOMAIN = 'blue-shop.nyc3.digitaloceanspaces.com' + "/" + AWS_STORAGE_BUCKET_NAME
-AWS_S3_ENDPOINT_URL  = 'https://blue-shop.nyc3.digitaloceanspaces.com'
+AWS_S3_CUSTOM_DOMAIN = os.environ.get("AWS_S3_CUSTOM_DOMAIN") + "/" + AWS_STORAGE_BUCKET_NAME
+AWS_S3_ENDPOINT_URL  = os.environ.get("AWS_S3_ENDPOINT_URL")
 
 MEDIA_URL = AWS_S3_CUSTOM_DOMAIN + "/" + AWS_STORAGE_BUCKET_NAME + "/"
 DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
