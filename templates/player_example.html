@@ -76,7 +76,7 @@
   <script>
     $(document).ready(function() {
       // Load videos and ads from REST API endpoint
-      var url='http://{{ base_url }}/video/api/videos/?format=json'
+      var url='{{ base_url }}/video/api/videos/?format=json'
       $.getJSON(url, function(data) {
         $.each(data, function(index, item) {
           // create a new carousel item for each video
