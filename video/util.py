@@ -85,7 +85,7 @@ def get_embed_code(video_id):
         -H 'Content-Type: application/json'
     """
     api_url,account,token,auth_email=setup()
-    resp = requests.get(api_url + account + '/stream/' + video_id + '/embed',
+    resp = requests.get(str(api_url) + str(account) + '/stream/' + video_id + '/embed',
                     headers={'Authorization': 'Bearer ' + token })
     if resp.status_code != 200:
         logger.warning("ERROR:" + str(resp.status_code) + "-" + str(resp.content))
@@ -97,8 +97,8 @@ def get_embed_code(video_id):
 def get_details(video_id):
     # https://api.cloudflare.com/client/v4/accounts/023e105f4ecef8ad9ca31a8372d0c353/stream/ea95132c15732412d22c1476fa83f27a
     api_url,account,token,auth_email=setup()
-    print(api_url + account + '/stream/' + video_id)
-    resp = requests.get(api_url + account + '/stream/' + video_id,
+    print(str(api_url) + str(account) + '/stream/' + str(video_id))
+    resp = requests.get(str(api_url) + str(account) + '/stream/' + str(video_id),
                     headers={'Authorization': 'Bearer ' + token })
     if resp.status_code != 200:
         logger.warning("ERROR:" + str(resp.status_code) + "-" + str(resp.content))
@@ -108,7 +108,7 @@ def get_details(video_id):
 
 def search_video(name):
     api_url,account,token,auth_email=setup()
-    resp = requests.get(api_url + account  + '/media?search=' + name,
+    resp = requests.get(str(api_url) + str(account)  + '/media?search=' + name,
                         headers={'Authorization': 'Bearer ' + token })
     if resp.status_code != 200:
         logger.warning("ERROR:" + str(resp.status_code) + "-" + str(resp.content))
@@ -118,7 +118,7 @@ def search_video(name):
 
 def delete_video(video_id):
     api_url,account,token,auth_email=setup()
-    resp = requests.delete(api_url + account + '/stream/' + video_id,
+    resp = requests.delete(str(api_url) + str(account) + '/stream/' + video_id,
                     headers={'Authorization': 'Bearer ' + token })
     if resp.status_code != 200:
         logger.warning("ERROR:" + str(resp.status_code) + "-" + str(resp.content))
@@ -129,7 +129,7 @@ def delete_video(video_id):
 def list_vidoes():
     # https://api.cloudflare.com/client/v4/accounts/{account_identifier}/stream
     api_url,account,token,auth_email=setup()
-    resp = requests.get(api_url + account  + '/stream',
+    resp = requests.get(str(api_url) + str(account)  + '/stream',
                         headers={'Authorization': 'Bearer ' + token })
     if resp.status_code != 200:
         logger.warning("ERROR:" + str(resp.status_code) + "-" + str(resp.content))
