@@ -15,6 +15,37 @@
 
 </head>
 <body>
+<style>
+/* Overlay styles */
+.ad {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background-color: rgba(0, 0, 0, 0.5); /* Faded grey color */
+}
+
+/* Image container styles */
+.ad-image-container {
+  position: relative;
+  width: 75px;
+  overflow: hidden; /* Hide any part of the image that overflows the container */
+}
+
+/* Image styles */
+.ad-image-container img {
+  width: 100%; /* Make the image fill the container */
+  height: auto; /* Maintain the image's aspect ratio */
+}
+
+/* Hover styles */
+.ad-image-container:hover .overlay {
+  display: block; /* Show the overlay when hovering over the image container */
+}
+
+
+</style>
 
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
@@ -36,8 +67,8 @@
     </div>
   </div>
   <div class="container-fluid">
-    <div id="carousel-ads" class="carousel-ads carousel slide" data-ride="carousel">
-      <div class="carousel-inner">
+    <div id="ad-carousel" class="carousel-ads carousel slide" data-ride="carousel">
+      <div class="carousel-inner-ads">
       </div>
     </div>
   </div>
@@ -45,20 +76,13 @@
   <script>
     $(document).ready(function() {
       // Load videos and ads from REST API endpoint
-      var url='{{ base_url }}/video/api/videos/?format=json'
+      var url='http://{{ base_url }}/video/api/videos/?format=json'
       $.getJSON(url, function(data) {
         $.each(data, function(index, item) {
           // create a new carousel item for each video
           var itemHtml = '<div class="carousel-item"><video width="80%" class="video-js vjs-default-skin vjs-big-play-centered" controls="false" autoplay muted></video><div class="carousel-caption"><h5>' + item.name + '</h5></div></div>';
           $('.carousel-inner').append(itemHtml);
-          console.log(item.playback_hls);
-          // create a new nested carousel for the ads
-          var adHtml = '<div class="carousel-item active"><div class="d-flex">';
-          $.each(item.related_products, function(index, ad) {
-            adHtml += '<div class="p-2"><a href="' + ad.url + '">' + ad.name + '<br/><img src="' + ad.images.image_url + '"></a></div>';
-          });
-          adHtml += '</div></div>';
-          $('.carousel-ads').append(adHtml);
+          console.log(item);
 
           // initialize the video player for each video
           var video = videojs($('.carousel-item').last().find('video').get(0), {fluid: true});
@@ -70,6 +94,17 @@
           });
           video.load();
           video.play();
+
+          // create a new nested carousel for the ads
+          if (item.related_products.length === 0) { console.log("Array is empty!")  } else {
+            var adHtml = '<div class="carousel-item active"><div class="d-flex">';
+            $.each(item.related_products, function(index, ad) {
+              console.log(ad);
+              adHtml += '<div class="ad"><a href="' + ad.link + '">' + ad.name + '<br/><div class="ad-image-container"><img src="' + ad.images[0].image_url + '" class="ad-image"></div></a></div>';
+            });
+            adHtml += '</div></div>';
+            $('.carousel-inner-ads').append(adHtml);
+          }
         });
 
         // activate the first carousel item and nested carousel
