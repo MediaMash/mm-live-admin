@@ -195,3 +195,6 @@ GOOGLE_APPLICATION_CREDENTIALS = "dev-buildly-e1ddcc965746.json"
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
 
 CRISPY_TEMPLATE_PACK = "bootstrap5"
+
+# e.g. in notification emails. Don't include '/admin' or a trailing slash
+BASE_URL = 'https://stingray-app-4wzxb.ondigitalocean.app/'

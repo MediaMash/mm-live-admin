@@ -34,12 +34,16 @@
         <span class="sr-only">Next</span>
       </a>
     </div>
+    <div id="carousel-ads" class="carousel-ads carousel slide" data-ride="carousel">
+      <div class="carousel-inner">
+      </div>
+    </div>
   </div>
 
   <script>
     $(document).ready(function() {
       // Load videos and ads from REST API endpoint
-      var url='https://mm-live-admin-w3awf.ondigitalocean.app/video/api/videos/?format=json'
+      var url='{{ BASE_URL}}' + '/video/api/videos/?format=json'
       $.getJSON(url, function(data) {
         $.each(data, function(index, item) {
           // create a new carousel item for each video

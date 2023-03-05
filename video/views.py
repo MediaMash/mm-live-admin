@@ -38,7 +38,7 @@ class VideoList(ListView):
         get_user = User.objects.all().filter(username=request.user.username)
         get_videos = Video.objects.all()
 
-        return render(request, self.template_name, {'getVideos': get_videos})
+        return render(request, self.template_name, {'getVideos': get_videos, 'BASE_URL': settings.BASE_URL})
 
 
 @method_decorator(login_required, name='dispatch')

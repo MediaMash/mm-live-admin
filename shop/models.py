@@ -40,7 +40,7 @@ class ShopProvider(models.Model):
         self.updated = timezone.now()
         super(ShopProvider, self).save()
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
 class ShopProviderAdmin(admin.ModelAdmin):
@@ -72,7 +72,7 @@ class Product(models.Model):
         self.updated = timezone.now()
         super(Product, self).save()
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
 class ProductAdmin(admin.ModelAdmin):

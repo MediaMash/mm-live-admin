@@ -80,7 +80,7 @@
   async function getVideos() {
     
     try {
-      const response = await fetch('http://127.0.0.1:8000/video/api/videos/?format=json');
+      const response = await fetch('{{ BASE_URL}}' + '/video/api/videos/?format=json');
       const data = await response.json();
 
       playlist = data.map(video => ({
