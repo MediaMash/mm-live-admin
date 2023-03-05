@@ -45,10 +45,10 @@ def upload_video(file, path):
 
     api_url,account,token,auth_email=setup()
 
-    print("url: " + api_url + account + '/stream')
+    print("url: " + str(api_url) + str(account) + '/stream')
     
     # Create a new tus client
-    my_client = client.TusClient(url=api_url + account + '/stream?direct_user=true',
+    my_client = client.TusClient(url=str(api_url) + str(account) + '/stream?direct_user=true',
                               headers={'Authorization': 'Bearer ' + token })
 
     # Open the video file
