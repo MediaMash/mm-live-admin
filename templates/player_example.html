@@ -20,7 +20,7 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 
 <a href="/video/video_list/" class="btn btn-primary btn-sm">Back to Admin</a>
-<a href="/video/video_player2/" class="btn btn-primary btn-sm">Preview Video Player 2</a>
+
   <div class="container-fluid">
     <div id="video-carousel" class="carousel slide" data-ride="carousel">
       <div class="carousel-inner">
@@ -34,6 +34,8 @@
         <span class="sr-only">Next</span>
       </a>
     </div>
+  </div>
+  <div class="container-fluid">
     <div id="carousel-ads" class="carousel-ads carousel slide" data-ride="carousel">
       <div class="carousel-inner">
       </div>
@@ -49,7 +51,7 @@
           // create a new carousel item for each video
           var itemHtml = '<div class="carousel-item"><video width="80%" class="video-js vjs-default-skin vjs-big-play-centered" controls="false" autoplay muted></video><div class="carousel-caption"><h5>' + item.name + '</h5></div></div>';
           $('.carousel-inner').append(itemHtml);
-
+          console.log(item.playback_hls);
           // create a new nested carousel for the ads
           var adHtml = '<div class="carousel-item active"><div class="d-flex">';
           $.each(item.related_products, function(index, ad) {
