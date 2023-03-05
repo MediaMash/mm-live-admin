@@ -38,7 +38,7 @@ class VideoList(ListView):
         get_user = User.objects.all().filter(username=request.user.username)
         get_videos = Video.objects.all()
 
-        return render(request, self.template_name, {'getVideos': get_videos, 'base_url': settings.BASE_URL})
+        return render(request, self.template_name, {'getVideos': get_videos})
 
 
 @method_decorator(login_required, name='dispatch')
@@ -68,7 +68,7 @@ class VideoPlayer(View):
 
     def get(self, request, *args, **kwargs):
         get_videos = Video.objects.all()
-        return render(request, self.template_name, {'getVideos': get_videos})
+        return render(request, self.template_name, {'getVideos': get_videos, 'base_url': settings.BASE_URL})
 
 
 @method_decorator(login_required, name='dispatch')
@@ -81,7 +81,7 @@ class VideoPlayer2(View):
 
     def get(self, request, *args, **kwargs):
         get_videos = Video.objects.all()
-        return render(request, self.template_name, {'getVideos': get_videos})
+        return render(request, self.template_name, {'getVideos': get_videos, 'base_url': settings.BASE_URL})
 
 @method_decorator(login_required, name='dispatch')
 class VideoCreate(CreateView):

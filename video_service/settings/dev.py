@@ -27,3 +27,6 @@ try:
     from .local import *
 except ImportError:
     pass
+
+# e.g. in notification emails. Don't include '/admin' or a trailing slash
+BASE_URL = '127.0.0.1:8000'
