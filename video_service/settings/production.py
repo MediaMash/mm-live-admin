@@ -47,7 +47,7 @@ STATICFILES_STORAGE = 'storages.backends.s3boto3.S3StaticStorage'
 
 AWS_DEFAULT_ACL = 'public-read'
 
-ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS")
+ALLOWED_HOSTS = ['stingray-app-4wzxb.ondigitalocean.app','mm-live-admin-w3awf.ondigitalocean.app']
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
