@@ -44,7 +44,7 @@
             <td><a href="/video/video_update/{{ item.id }}">{{ item.name }}</a></td>
             <td>{{item.description}}</td>
             <td>{{item.owner}}</td>
-            <td><a href="/media/videos/{{item.video_file}}" target="_new">{{item.video_file}}</a></td>
+            <td><a href="{% static 'media/videos/{{item.video_file}}' %}" target="_new">{{item.video_file}}</a></td>
             <td>{{item.link}}</td>
             <td>{{item.status}}</td>
             <td>{{ item.created }}</td>
