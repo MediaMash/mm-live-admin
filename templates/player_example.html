@@ -70,6 +70,14 @@
     <div id="ad-carousel" class="carousel slide" data-ride="carousel">
       <div class="carousel-inner-ads">
       </div>
+      <a class="carousel-control-prev" href="#ad-carousel" role="button" data-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="sr-only">Previous</span>
+      </a>
+      <a class="carousel-control-next" href="#ad-carousel" role="button" data-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="sr-only">Next</span>
+      </a>
     </div>
   </div>
 
@@ -90,7 +98,8 @@
           console.log(item.playback_hls);
           video.src({
             src: item.playback_hls,
-            type: 'application/x-mpegURL'
+            type: 'application/x-mpegURL',
+            loop: true,
           });
           video.load();
           video.play();
