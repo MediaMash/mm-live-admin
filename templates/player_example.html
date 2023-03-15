@@ -54,8 +54,6 @@
 
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-<a href="/video/video_player2/" class="btn btn-primary btn-sm">Player 2</a>
-<a href="/video/video_list/" class="btn btn-primary btn-sm">Back to Admin</a>
 
   <div class="container-fluid">
     <div id="video-carousel" class="carousel slide" data-ride="carousel">
@@ -75,16 +73,9 @@
     <div id="ad-carousel" class="carousel slide" data-ride="carousel">
       <div class="carousel-inner-ads">
       </div>
-      <a class="carousel-control-prev" href="#ad-carousel" role="button" data-slide="prev">
-        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-        <span class="sr-only">Previous</span>
-      </a>
-      <a class="carousel-control-next" href="#ad-carousel" role="button" data-slide="next">
-        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-        <span class="sr-only">Next</span>
-      </a>
     </div>
   </div>
+
 
   <script>
     $(document).ready(function() {
@@ -93,7 +84,7 @@
       $.getJSON(url, function(data) {
         $.each(data, function(index, item) {
           // create a new carousel item for each video
-          var itemHtml = '<div class="carousel-item"><video width="100%" class="video-js vjs-default-skin vjs-big-play-centered" controls="false" loop autoplay muted></video><div class="carousel-caption"><h5>' + item.name + '</h5></div></div>';
+          var itemHtml = '<div class="carousel-item"><video width="450px" class="video-js vjs-default-skin vjs-big-play-centered" controls="false" loop autoplay muted></video><div class="carousel-caption"><h5>' + item.name + '</h5></div></div>';
           $('.carousel-inner').append(itemHtml);
           console.log(item);
 
