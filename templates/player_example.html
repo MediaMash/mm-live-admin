@@ -101,7 +101,7 @@
 
           // create a new nested carousel for the ads
           if (item.related_products.length === 0) { console.log("Array is empty!")  } else {
-            var adHtml = '<div class="carousel-item active"><div class="d-flex">';
+            var adHtml = '<div class="carousel-ads active"><div class="d-flex">';
             $.each(item.related_products, function(index, ad) {
               console.log(ad);
               adHtml += '<div class="ad"><a href="' + ad.link + '">' + ad.name + '<br/><div class="ad-image-container"><img src="' + ad.images[0].image_url + '" class="ad-image"></div></a></div>';
