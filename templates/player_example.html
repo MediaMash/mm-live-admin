@@ -53,7 +53,7 @@
 <a href="/video/video_list/" class="btn btn-primary btn-sm">Back to Admin</a>
 
   <div class="container-fluid">
-    <div id="video-carousel" class="carousel slide" data-ride="carousel">
+    <div id="video-carousel" class="carousel carousel-dark slide" data-ride="carousel">
       <div class="carousel-inner">
       </div>
       <a class="carousel-control-prev" href="#video-carousel" role="button" data-slide="prev">
@@ -88,7 +88,7 @@
       $.getJSON(url, function(data) {
         $.each(data, function(index, item) {
           // create a new carousel item for each video
-          var itemHtml = '<div class="carousel-item"><video width="100%" class="video-js vjs-default-skin vjs-big-play-centered" controls="false" preload="auto" loop autoplay muted></video><div class="carousel-caption"><h5>' + item.name + '</h5></div></div>';
+          var itemHtml = '<div class="carousel-item"><video width="100%" class="video-js vjs-default-skin vjs-big-play-centered" controls="false" loop autoplay muted></video><div class="carousel-caption"><h5>' + item.name + '</h5></div></div>';
           $('.carousel-inner').append(itemHtml);
           console.log(item);
 
