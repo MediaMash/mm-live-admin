@@ -51,4 +51,4 @@ moviepy
 facebook-sdk
 djangorestframework
 crispy-bootstrap5
-django-cors-headers
+django-cors-headers==3.10
