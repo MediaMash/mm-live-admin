@@ -223,7 +223,12 @@ def publish_vimeo(request, pk):
 from rest_framework import viewsets
 from .models import Video
 from .serializer import VideoSerializer
+from rest_framework.permissions import AllowAny
 
+"""
+Public DjangoRestFramework Views for Viewing Videos
+"""
 class VideoViewSet(viewsets.ModelViewSet):
+    permission_classes = [AllowAny]
     queryset = Video.objects.all()
     serializer_class = VideoSerializer
