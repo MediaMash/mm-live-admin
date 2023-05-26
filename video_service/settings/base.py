@@ -48,7 +48,7 @@ INSTALLED_APPS_THIRD_PARTIES = [
     'material',
     'storages',
     'django_social_share',
-    'corsheaders'
+    'corsheaders',
 
     # Health check
     'health_check',

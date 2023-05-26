@@ -58,9 +58,4 @@ GOOGLE_APPLICATION_CREDENTIALS = os.environ.get("GOOGLE_APPLICATION_CREDENTIALS"
 
 BASE_URL = os.environ.get("BASE_URL")
 
-CORS_ALLOWED_ORIGINS = [
-    'http://127.0.0.1:8000',  # Add the origins that are allowed to access the API
-    'http://127.0.0.1',
-    'http://localhost',
-    # Add other allowed origins if necessary
-]
+CORS_ALLOW_ALL_ORIGINS = True
