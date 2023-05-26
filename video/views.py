@@ -224,11 +224,13 @@ from rest_framework import viewsets
 from .models import Video
 from .serializer import VideoSerializer
 from rest_framework.permissions import AllowAny
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
+
 
 """
 Public DjangoRestFramework Views for Viewing Videos
 """
 class VideoViewSet(viewsets.ModelViewSet):
-    permission_classes = [AllowAny]
+    permission_classes = [IsAuthenticatedOrReadOnly]
     queryset = Video.objects.all()
     serializer_class = VideoSerializer
