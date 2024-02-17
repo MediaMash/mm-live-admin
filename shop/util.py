@@ -50,6 +50,7 @@ def getProducts():
                             price=product_data['variants'][0]['price'],
                             sku=product_data['variants'][0]['sku'],
                             description=product_data['body_html'],
+                            shop_product_id=product_data['id'],
                             link=product_link,)
             product.save()
             # iterate through images and save it to product_image model

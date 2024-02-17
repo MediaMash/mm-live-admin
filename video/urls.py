@@ -1,7 +1,7 @@
 from django.urls import path, re_path, include
 from django.conf.urls import url
 from django.conf.urls import include
-from .views import VideoList, VideoUpdate, VideoCreate, VideoDelete, VideoView, VideoPlayer, VideoPlayer2, publish_youtube, publish_vimeo, VideoViewSet
+from .views import VideoList, VideoUpdate, VideoCreate, VideoDelete, VideoView, VideoPlayer, VideoPlayer2, publish_youtube, publish_vimeo, VideoViewSet, ProductViewSet, VideoProductViewSet
 from .stream_views import LiveStreamList, LiveStreamUpdate, LiveStreamCreate, LiveStreamDelete, LiveStreamView, LiveStreamPlayer
 from . import stream_views
 
@@ -9,6 +9,8 @@ from rest_framework.routers import DefaultRouter
 
 router = DefaultRouter()
 router.register(r'videos', VideoViewSet, basename='video')
+router.register(r'products', ProductViewSet, basename='product')
+router.register(r'videoproduct', VideoProductViewSet, basename='videoproduct')
 
 
 urlpatterns = [
