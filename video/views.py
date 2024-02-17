@@ -14,7 +14,7 @@ from django.utils.decorators import method_decorator
 from django.views.generic.base import TemplateView, View
 from django.views.generic.edit import CreateView, UpdateView, DeleteView, View
 from django.views.generic.list import ListView
-from .models import Video, VideoProduct
+from .models import Video, VideoProduct, Product
 from .forms import VideoForm
 from .util import get_details
 
@@ -221,8 +221,9 @@ def publish_vimeo(request, pk):
 
 
 from rest_framework import viewsets
-from .models import Video
-from .serializer import VideoSerializer
+from .models import Video, Product, VideoProduct
+from shop.models import ProductImage
+from .serializer import VideoSerializer, ProductSerializer, VideoProductSerializer, ProductImageSerializer
 from rest_framework.permissions import AllowAny
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 
@@ -234,3 +235,21 @@ class VideoViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticatedOrReadOnly]
     queryset = Video.objects.all()
     serializer_class = VideoSerializer
+
+
+class ProductViewSet(viewsets.ModelViewSet):
+    permission_classes = [IsAuthenticatedOrReadOnly]
+    queryset = Product.objects.all()
+    serializer_class = ProductSerializer
+
+
+class VideoProductViewSet(viewsets.ModelViewSet):
+    permission_classes = [IsAuthenticatedOrReadOnly]
+    queryset = VideoProduct.objects.all()
+    serializer_class = VideoProductSerializer
+
+
+class ProductImageViewSet(viewsets.ModelViewSet):
+    permission_classes = [IsAuthenticatedOrReadOnly]
+    queryset = ProductImage.objects.all()
+    serializer_class = ProductImageSerializer

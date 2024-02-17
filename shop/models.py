@@ -51,6 +51,7 @@ class ShopProviderAdmin(admin.ModelAdmin):
 # Create your models here.
 class Product(models.Model):
     name = models.CharField(blank=True, null=True, max_length=255, help_text="Name of Product")
+    store_product_id = models.CharField(max_length=255, blank=True, null=True)
     provider = models.ForeignKey(ShopProvider, blank=True, null=True, on_delete=models.CASCADE, help_text="Extneral or Internal Stream Host")
     price = models.DecimalField(max_digits=10, decimal_places=2, default="0.00")
     sku = models.CharField(max_length=255, blank=True, null=True)
