@@ -14,6 +14,9 @@ from django.utils.decorators import method_decorator
 from django.views.generic.base import TemplateView, View
 from django.views.generic.edit import CreateView, UpdateView, DeleteView, View
 from django.views.generic.list import ListView
+
+from django_filters.rest_framework import DjangoFilterBackend
+
 from .models import Video, VideoProduct, Product
 from .forms import VideoForm
 from .util import get_details
@@ -235,21 +238,27 @@ class VideoViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticatedOrReadOnly]
     queryset = Video.objects.all()
     serializer_class = VideoSerializer
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['product.store_product_id', 'name', 'status']
 
 
 class ProductViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticatedOrReadOnly]
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['store_product_id', 'name', 'product_type', 'category']
 
 
 class VideoProductViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticatedOrReadOnly]
     queryset = VideoProduct.objects.all()
     serializer_class = VideoProductSerializer
+    filter_backends = [DjangoFilterBackend]
 
 
 class ProductImageViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticatedOrReadOnly]
     queryset = ProductImage.objects.all()
     serializer_class = ProductImageSerializer
+    filter_backends = [DjangoFilterBackend]
