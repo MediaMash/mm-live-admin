@@ -239,7 +239,7 @@ class VideoViewSet(viewsets.ModelViewSet):
     queryset = Video.objects.all()
     serializer_class = VideoSerializer
     filter_backends = [DjangoFilterBackend]
-    filterset_fields = ['product.store_product_id', 'name', 'status']
+    filterset_fields = ['product__store_product_id', 'name', 'status']
 
 
 class ProductViewSet(viewsets.ModelViewSet):
